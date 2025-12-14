@@ -1,0 +1,3 @@
+name = "i0c-redirect-worker"
+main = "src/worker.ts"
+compatibility_date = "2025-12-14"
