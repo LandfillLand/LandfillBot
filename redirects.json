@@ -1,9 +1,18 @@
 {
   "Main": {
     "/w": "https://wenturc.com",
-    "/i": "https://igcrystal.icu"
+    "/i": "https://igcrystal.icu",
+    "/i/b": "https://blog.igcrystal.icu"
   },
   "Project": {
-    "/nl": "https://neo-life.wenturc.com"
+    "/w/nl": "https://neo-life.wenturc.com"
+  },
+  "Others": {
+    "/w/c": "https://chat.wenturc.com",
+    "/w/n": "https://note.wenturc.com",
+    "/w/h": "https://hls.wenturc.com",
+    "/w/s": "https://status.wenturc.com/status/all",
+    "/w/nl/pa": "https://aaaneko.neo-life.wenturc.com",
+    "/w/nl/a": "https://cbblover.neo-life.wenturc.com"
   }
 }
