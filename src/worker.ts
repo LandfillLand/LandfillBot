@@ -2,6 +2,11 @@ import { base64Icon } from "./favicon";
 
 declare const caches: CacheStorage & { default: Cache };
 
+const CONFIG_REPO = "IGCyukira/i0c.cc";
+const CONFIG_BRANCH = "data";
+const CONFIG_PATH = "redirects.json";
+const CONFIG_URL = `https://raw.githubusercontent.com/${CONFIG_REPO}/${CONFIG_BRANCH}/${CONFIG_PATH}`;
+
 type RouteType = "prefix" | "exact" | "proxy";
 
 type RouteValue = string | RouteConfig;
@@ -45,7 +50,6 @@ const HSTS_HEADER_VALUE = "max-age=63072000; includeSubDomains";
 
 const worker = {
   async fetch(request: Request): Promise<Response> {
-    const configUrl = "https://raw.githubusercontent.com/IGCyukira/i0c.cc/main/redirects.json";
     const url = new URL(request.url);
     let path = normalisePath(url.pathname || "/");
 
@@ -59,7 +63,7 @@ const worker = {
       return serveFavicon();
     }
 
-    const redirectsConfig = await loadConfig(configUrl);
+    const redirectsConfig = await loadConfig(CONFIG_URL);
     const slotSource = getSlotSource(redirectsConfig);
     if (!slotSource) {
       return new Response("503 No Slots configured", {
