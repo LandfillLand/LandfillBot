@@ -13,7 +13,6 @@ if (typeof tsconfigPathsPlugin !== "function") {
 export default defineConfig({
   entry: {
     "platforms/cloudflare": "src/platforms/cloudflare.ts",
-    "platforms/vercel-edge": "src/platforms/vercel-edge.ts",
     "platforms/deno": "src/platforms/deno.ts",
     "api/index": "api/index.ts"
   },
