@@ -1,4 +1,4 @@
-import { base64Icon } from "@/assets/favicon";
+import { base64Icon } from "@/assets/favicon.ts";
 
 declare const process: undefined | { env?: Record<string, string | undefined> };
 declare const Deno: undefined | { env?: { get?(key: string): string | undefined } };

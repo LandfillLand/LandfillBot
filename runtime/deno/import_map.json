@@ -4,8 +4,8 @@
     "@/platforms/": "../../src/platforms/",
     "@/lib/": "../../src/lib/",
     "@/assets/": "../../src/assets/",
-    "@/platforms/deno": "../../src/platforms/deno.ts",
-    "@/lib/handler": "../../src/lib/handler.ts",
-    "@/assets/favicon": "../../src/assets/favicon.ts"
+    "@/platforms/deno.ts": "../../src/platforms/deno.ts",
+    "@/lib/handler.ts": "../../src/lib/handler.ts",
+    "@/assets/favicon.ts": "../../src/assets/favicon.ts"
   }
 }

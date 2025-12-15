@@ -1,4 +1,4 @@
-import { handleRedirectRequest, resolveConfigUrlFromBindings, type HandlerOptions } from "@/lib/handler";
+import { handleRedirectRequest, resolveConfigUrlFromBindings, type HandlerOptions } from "@/lib/handler.ts";
 
 type DenoLike = {
   serve?: (handler: (request: Request) => Response | Promise<Response>) => unknown;

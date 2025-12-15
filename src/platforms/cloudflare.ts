@@ -1,5 +1,5 @@
 import type { ExecutionContext } from "@cloudflare/workers-types";
-import { handleRedirectRequest, resolveConfigUrlFromBindings, type HandlerOptions } from "@/lib/handler";
+import { handleRedirectRequest, resolveConfigUrlFromBindings, type HandlerOptions } from "@/lib/handler.ts";
 
 declare const caches: CacheStorage & { default: Cache };
 

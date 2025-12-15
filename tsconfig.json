@@ -14,6 +14,7 @@
     "strict": true,
     "noEmit": true,
     "forceConsistentCasingInFileNames": true,
+    "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "skipLibCheck": true
   },
