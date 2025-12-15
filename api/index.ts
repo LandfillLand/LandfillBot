@@ -1,4 +1,4 @@
-import { createVercelRouteHandler } from "../src/platforms/vercel-edge";
+import { createVercelRouteHandler } from "@/platforms/vercel-edge";
 
 export const config = { runtime: "edge" };
 
