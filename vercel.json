@@ -1,9 +1,4 @@
 {
-  "functions": {
-    "api/index.ts": {
-      "runtime": "vercel-edge"
-    }
-  },
   "routes": [
     {
       "src": "/(.*)",
