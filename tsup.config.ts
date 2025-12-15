@@ -13,6 +13,7 @@ if (typeof tsconfigPathsPlugin !== "function") {
 export default defineConfig({
   entry: {
     "platforms/cloudflare": "src/platforms/cloudflare.ts",
+    "platforms/netlify-edge": "src/platforms/netlify-edge.ts",
     "api/index": "src/platforms/vercel-edge.ts"
   },
   format: ["esm"],

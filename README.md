@@ -1,4 +1,4 @@
-Universal redirect runtime for fetch-compatible edge platforms (Cloudflare Workers, Vercel Edge Functions). It enforces HTTPS, serves a favicon, and applies redirect or proxy rules defined in a remote redirects.json file.
+Universal redirect runtime for fetch-compatible edge platforms (Cloudflare Workers, Vercel Edge Functions, Netlify Edge Functions). It enforces HTTPS, serves a favicon, and applies redirect or proxy rules defined in a remote redirects.json file.
 
 ```
 i0c.cc/
@@ -7,6 +7,7 @@ i0c.cc/
 |   |   `-- handler.ts
 |   `-- platforms/
 |       |-- cloudflare.ts
+|       |-- netlify-edge.ts
 |       `-- vercel-edge.ts
 |-- dist/
 |   `-- platforms/
@@ -22,6 +23,7 @@ i0c.cc/
 
 - Cloudflare Workers: build [src/platforms/cloudflare.ts](src/platforms/cloudflare.ts) to dist/platforms/cloudflare.js; Wrangler runs `npm run build` automatically.
 - Vercel Edge Functions: import the handler from [src/platforms/vercel-edge.ts](src/platforms/vercel-edge.ts).
+- Netlify Edge Functions: deploy the bundle from [src/platforms/netlify-edge.ts](src/platforms/netlify-edge.ts) (or dist/netlify/edge-functions/redirects.js after `npm run build`).
 
 Need a custom runtime? Import `handleRedirectRequest` from [src/lib/handler.ts](src/lib/handler.ts) and call it with your own `Request` object plus optional `HandlerOptions` (for example, override the config URL or provide a cache implementation).
 

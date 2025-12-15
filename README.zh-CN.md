@@ -1,4 +1,4 @@
-面向 Cloudflare Workers、Vercel Edge Functions 等 fetch 兼容边缘平台的通用脚本：负责强制 HTTPS、返回 favicon，并基于远程 redirects.json 中的规则执行重定向或代理。
+面向 Cloudflare Workers、Vercel Edge Functions、Netlify Edge Functions 等 fetch 兼容边缘平台的通用脚本：负责强制 HTTPS、返回 favicon，并基于远程 redirects.json 中的规则执行重定向或代理。
 
 ```
 i0c.cc/
@@ -7,6 +7,7 @@ i0c.cc/
 |   |   `-- handler.ts
 |   `-- platforms/
 |       |-- cloudflare.ts
+|       |-- netlify-edge.ts
 |       `-- vercel-edge.ts
 |-- dist/
 |   `-- platforms/
@@ -22,6 +23,7 @@ i0c.cc/
 
 - Cloudflare Workers：构建 [src/platforms/cloudflare.ts](src/platforms/cloudflare.ts) 输出 dist/platforms/cloudflare.js，Wrangler 会自动执行 `npm run build`。
 - Vercel Edge Functions：在路由处理器中引入 [src/platforms/vercel-edge.ts](src/platforms/vercel-edge.ts)。
+- Netlify Edge Functions：部署 [src/platforms/netlify-edge.ts](src/platforms/netlify-edge.ts)（或执行 `npm run build` 后的 dist/netlify/edge-functions/redirects.js）。
 
 需要自定义运行时？可从 [src/lib/handler.ts](src/lib/handler.ts) 引入 `handleRedirectRequest`，再配合 `HandlerOptions`（例如替换配置地址或注入自定义缓存实现）。
 

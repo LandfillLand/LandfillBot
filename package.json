@@ -3,18 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "tsup --config tsup.config.ts && node scripts/prepare-vercel-output.mjs",
+    "build": "tsup --config tsup.config.ts && node scripts/post-build.mjs",
     "dev:cf": "wrangler dev",
     "deploy:cf": "wrangler deploy",
-    "build:vc": "npm run build && node scripts/prepare-vercel-output.mjs",
-    "build:vc:watch": "tsup --config tsup.config.ts --watch --onSuccess \"node scripts/prepare-vercel-output.mjs\"",
+    "build:vc": "npm run build",
+    "build:vc:watch": "tsup --config tsup.config.ts --watch --onSuccess \"node scripts/post-build.mjs\"",
     "dev:vc": "concurrently \"npm run build:vc:watch\" \"vercel dev\"",
-    "deploy:vc": "vercel --prod"
+    "deploy:vc": "vercel --prod",
+    "build:nf": "netlify build",
+    "dev:nf": "netlify dev",
+    "deploy:nf": "netlify deploy --build"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20251213.0",
     "@esbuild-plugins/tsconfig-paths": "^0.1.2",
     "concurrently": "^9.2.1",
+    "netlify-cli": "^23.12.3",
     "tsup": "^8.5.1",
     "typescript": "^5.9.3",
     "vercel": "^50.0.1",
