@@ -1,0 +1,14 @@
+{
+  "functions": {
+    "api/index.ts": {
+      "runtime": "edge",
+      "entrypoint": "api/index.ts"
+    }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/api/index"
+    }
+  ]
+}
