@@ -223,7 +223,13 @@ export async function handleRedirectRequest(request: Request, options: HandlerOp
 }
 
 function resolveRuntimeOptions(options: HandlerOptions): ResolvedRuntime {
-  const fetchImpl = options.fetchImpl ?? fetch;
+  const fetchImpl: typeof fetch =
+    options.fetchImpl ??
+    (typeof globalThis.fetch === "function"
+      ? (globalThis.fetch.bind(globalThis) as typeof fetch)
+      : ((() => {
+          throw new Error("fetch is not available in this environment");
+        }) as unknown as typeof fetch));
   const cacheTtlSeconds = options.cacheTtlSeconds ?? DEFAULT_CACHE_TTL_SECONDS;
   const now = options.now ?? (() => Date.now());
 
