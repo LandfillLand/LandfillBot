@@ -1,4 +1,4 @@
-import { handleRedirectRequest, resolveConfigUrlFromBindings, type HandlerOptions } from "@/lib/handler";
+import { handleRedirectRequest, resolveConfigUrlFromBindings, type HandlerOptions } from "../lib/handler";
 
 export function createDenoHandler(options?: HandlerOptions) {
   const configUrl = options?.configUrl ?? resolveConfigUrlFromBindings();
