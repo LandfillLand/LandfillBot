@@ -1,12 +1,15 @@
-import { handleRedirectRequest, resolveConfigUrlFromBindings, type HandlerOptions } from "../lib/handler";
+import { handleRedirectRequest, resolveConfigUrlFromBindings, type HandlerOptions } from "../lib/handler.ts";
 
 export function createDenoHandler(options?: HandlerOptions) {
-  const configUrl = options?.configUrl ?? resolveConfigUrlFromBindings();
-  const baseOptions = configUrl && configUrl !== options?.configUrl ? { ...options, configUrl } : options;
-
-  return (request: Request): Promise<Response> => handleRedirectRequest(request, baseOptions);
+  return async (request: Request): Promise<Response> => {
+    const bindings = Deno.env.toObject();
+    const configUrl = options?.configUrl ?? resolveConfigUrlFromBindings(bindings);
+    const baseOptions = configUrl && configUrl !== options?.configUrl 
+      ? { ...options, configUrl } 
+      : options;
+    return handleRedirectRequest(request, baseOptions);
+  };
 }
 
 export const handler = createDenoHandler();
-
 export type { HandlerOptions };
