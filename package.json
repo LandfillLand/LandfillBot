@@ -7,7 +7,7 @@
     "dev:cf": "wrangler dev",
     "deploy:cf": "wrangler deploy",
     "dev:dn": "deno run --allow-net --allow-env --import-map=runtime/deno/import_map.json src/platforms/deno.ts",
-    "deploy:dn": "deno deploy --import-map=runtime/deno/import_map.json src/platforms/deno.ts",
+    "deploy:dn": "deno task deploy",
     "build:vc": "npm run build && node scripts/prepare-vercel-output.mjs",
     "build:vc:watch": "tsup --config tsup.config.ts --watch --onSuccess \"node scripts/prepare-vercel-output.mjs\"",
     "dev:vc": "concurrently \"npm run build:vc:watch\" \"vercel dev\"",

@@ -1,4 +1,5 @@
 {
+  "importMap": "runtime/deno/import_map.json",
   "tasks": {
     "dev": "deno run --allow-net --allow-env --watch --import-map=runtime/deno/import_map.json src/platforms/deno.ts",
     "deploy": "deployctl deploy --project=i0c-redirect-worker src/platforms/deno.ts --import-map=runtime/deno/import_map.json"
