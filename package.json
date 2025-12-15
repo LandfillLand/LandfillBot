@@ -10,7 +10,7 @@
     "build:vc:watch": "tsup --config tsup.config.ts --watch --onSuccess \"node scripts/post-build.mjs\"",
     "dev:vc": "concurrently \"npm run build:vc:watch\" \"vercel dev\"",
     "deploy:vc": "vercel --prod",
-    "build:nf": "netlify build",
+    "build:nf": "npm run build",
     "dev:nf": "netlify dev",
     "deploy:nf": "netlify deploy --build"
   },
