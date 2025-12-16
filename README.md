@@ -23,6 +23,7 @@ After deploying:
 - Cloudflare Workers: [src/platforms/cloudflare.ts](src/platforms/cloudflare.ts)  
 - Vercel Edge Functions: [src/platforms/vercel-edge.ts](src/platforms/vercel-edge.ts)  
 - Netlify Edge Functions: [src/platforms/netlify-edge.ts](src/platforms/netlify-edge.ts)  
+- Deno (local / Deploy): [src/platforms/deno.ts](src/platforms/deno.ts)  
 
 Need a custom runtime? Import `handleRedirectRequest` from [src/lib/handler.ts](src/lib/handler.ts) and call it with your own `Request` object plus optional `HandlerOptions` (for example, override the config URL or provide a cache implementation).
 
