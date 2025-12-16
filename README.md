@@ -18,25 +18,6 @@ After deploying:
 - Sync secrets across environments if you override other handler options (for example cache bindings).
 - Re-run `npm run build` locally when updating the shared redirect logic, then redeploy.
 
-```
-i0c.cc/
-|-- src/
-|   |-- lib/
-|   |   `-- handler.ts
-|   `-- platforms/
-|       |-- cloudflare.ts
-|       |-- netlify-edge.ts
-|       `-- vercel-edge.ts
-|-- dist/
-|   `-- platforms/
-|       `-- cloudflare.js
-|-- package.json
-|-- tsconfig.json
-|-- tsconfig.build.json
-|-- wrangler.toml
-`-- ...
-```
-
 ## Choose an adapter
 
 - Cloudflare Workers: build [src/platforms/cloudflare.ts](src/platforms/cloudflare.ts) to dist/platforms/cloudflare.js; Wrangler runs `npm run build` automatically.
