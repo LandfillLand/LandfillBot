@@ -4,8 +4,8 @@ Universal redirect runtime for fetch-compatible edge platforms (Cloudflare Worke
 
 Live previews:
 - Primary domain: https://i0c.cc
-- Vercel deployment: https://i0c-cc.vercel.app
-- Netlify deployment: https://i0c-cc.netlify.app
+- Vercel deployment: https://vc.i0c.cc
+- Netlify deployment: https://nf.i0c.cc
 
 ## One-click deploy
 
