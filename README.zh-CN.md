@@ -23,7 +23,6 @@
 - Cloudflare Workers：[src/platforms/cloudflare.ts](src/platforms/cloudflare.ts)  
 - Vercel Edge Functions：[src/platforms/vercel-edge.ts](src/platforms/vercel-edge.ts)  
 - Netlify Edge Functions：[src/platforms/netlify-edge.ts](src/platforms/netlify-edge.ts)  
-- Deno（本地/Deploy）：[src/platforms/deno.ts](src/platforms/deno.ts)  
 
 需要自定义运行时？可从 [src/lib/handler.ts](src/lib/handler.ts) 引入 `handleRedirectRequest`，再配合 `HandlerOptions`（例如替换配置地址或注入自定义缓存实现）。
 
