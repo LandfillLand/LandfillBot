@@ -1,4 +1,4 @@
-# i0c.cc
+# <img src="https://raw.githubusercontent.com/IGCyukira/i0c.cc/refs/heads/main/7F3AA226732D061E8AC829AD323B314D1.webp" alt="i0c.cc" width = "420">
 
 Universal redirect runtime for fetch-compatible edge platforms (Cloudflare Workers, Vercel Edge Functions, Netlify Edge Functions). It enforces HTTPS, serves a favicon, and applies redirect or proxy rules defined in a remote redirects.json file.
 
