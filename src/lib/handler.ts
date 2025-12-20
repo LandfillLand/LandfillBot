@@ -1,10 +1,10 @@
-import { loadConfig, resolveRuntimeOptions } from "./loader";
-import { applyTemplate, appendOriginalQuery, buildCompiledList, flattenSlots, getSlotSource, resolvePrefixTarget } from "./matcher";
-import { HandlerOptions, RouteValueEntry } from "./types";
-import { serveFavicon } from "./favicon-serve";
-import { HTTPS_REDIRECT_STATUS } from "./constants";
-import { needsHttpsRedirect, respondUsingRule } from "./response";
-import { normalisePath, safeDecode } from "./utils";
+import { loadConfig, resolveRuntimeOptions } from "@handlers/loader";
+import { applyTemplate, appendOriginalQuery, buildCompiledList, flattenSlots, getSlotSource, resolvePrefixTarget } from "@handlers/matcher";
+import { HandlerOptions, RouteValueEntry } from "@handlers/types";
+import { serveFavicon } from "@handlers/favicon-serve";
+import { HTTPS_REDIRECT_STATUS } from "@handlers/constants";
+import { needsHttpsRedirect, respondUsingRule } from "@handlers/response";
+import { normalisePath, safeDecode } from "@handlers/utils";
 
 export async function handleRedirectRequest(request: Request, options: HandlerOptions = {}): Promise<Response> {
   const runtime = resolveRuntimeOptions(options);
@@ -63,5 +63,5 @@ export async function handleRedirectRequest(request: Request, options: HandlerOp
   });
 }
 
-export { resolveConfigUrlFromBindings, DEFAULT_CONFIG_URL } from "./config";
-export type { RedirectsConfig, RouteConfig } from "./types";
+export { resolveConfigUrlFromBindings, DEFAULT_CONFIG_URL } from "./handlers/config";
+export type { RedirectsConfig, RouteConfig } from "./handlers/types";
