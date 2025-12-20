@@ -1,3 +1,17 @@
+/**
+ * @file loader.ts
+ * @description
+ * [EN] Config Loader & Cache.
+ * Handles fetching the remote configuration JSON via HTTP and managing in-memory caching
+ * strategies to optimize performance and reduce latency.
+ *
+ * [CN] 配置加载器与缓存。
+ * 处理通过 HTTP 获取远程配置 JSON 的请求，并管理内存缓存策略，
+ * 以优化性能并降低延迟。
+ *
+ * @see {@link https://github.com/IGCyukira/i0c.cc} for repository info.
+ */
+
 import { DEFAULT_CONFIG_URL } from "./config";
 import { safeParseJson } from "./utils";
 import { DEFAULT_CACHE_TTL_SECONDS } from "./constants";

@@ -1,3 +1,17 @@
+/**
+ * @file matcher.ts
+ * @description
+ * [EN] Routing Engine & Matcher.
+ * The core engine responsible for compiling routing rules into regex, flattening configuration slots,
+ * and performing the actual pattern matching against request paths.
+ *
+ * [CN] 路由引擎与匹配器。
+ * 核心引擎，负责将路由规则编译为正则、展平配置插槽（Slots），
+ * 并针对请求路径执行实际的模式匹配。
+ *
+ * @see {@link https://github.com/IGCyukira/i0c.cc} for repository info.
+ */
+
 import { coerceRouteValues, isRecord, toRouteArray } from "./utils";
 import { DEFAULT_STATUS } from "./constants";
 import { CompiledEntry, NormalizedRule, RedirectsConfig, RouteConfig, RouteType, RouteValue, RouteValueEntry, SlotBranch } from "./types";

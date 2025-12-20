@@ -1,4 +1,4 @@
-# i0c.cc
+# <img src="https://raw.githubusercontent.com/IGCyukira/i0c.cc/refs/heads/main/7F3AA226732D061E8AC829AD323B314D1.webp" alt="i0c.cc" width = "420">
 
 面向 Cloudflare Workers、Vercel Edge Functions、Netlify Edge Functions 等 fetch 兼容边缘平台的通用脚本：负责强制 HTTPS、返回 favicon，并基于远程 redirects.json 中的规则执行重定向或代理。
 

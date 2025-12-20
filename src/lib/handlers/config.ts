@@ -1,3 +1,16 @@
+/**
+ * @file config.ts
+ * @description
+ * [EN] Configuration URL Resolution.
+ * Determines the source URL for the redirection rules (JSON). It resolves priorities between
+ * direct URL bindings and repository-based (GitHub) path construction.
+ *
+ * [CN] 配置 URL 解析。
+ * 确定重定向规则（JSON）的源 URL。它负责解析直接 URL 绑定与基于代码仓库（GitHub）路径构建之间的优先级。
+ *
+ * @see {@link https://github.com/IGCyukira/i0c.cc} for repository info.
+ */
+
 import { readBindingVar, readEnvPriority } from "./env";
 
 const ENV_CONFIG_REPO = readEnvPriority(["REDIRECTS_CONFIG_REPO", "CONFIG_REPO"]);

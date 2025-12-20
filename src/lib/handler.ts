@@ -1,3 +1,17 @@
+/**
+ * @file handler.ts
+ * @description
+ * [EN] Core Logic Entry Point.
+ * This module acts as the controller that coordinates config loading,
+ * route matching (regex/prefix), and response handling. It is platform-agnostic.
+ *
+ * [CN] 核心逻辑入口。
+ * 该模块作为控制器，负责协调配置加载、路由匹配（正则/前缀）以及响应处理。
+ * 它与具体部署平台（Cloudflare/Vercel）解耦，通用性强。
+ *
+ * @see {@link https://github.com/IGCyukira/i0c.cc} for repository info.
+ */
+
 import { loadConfig, resolveRuntimeOptions } from "@handlers/loader";
 import { applyTemplate, appendOriginalQuery, buildCompiledList, flattenSlots, getSlotSource, resolvePrefixTarget } from "@handlers/matcher";
 import { HandlerOptions, RouteValueEntry } from "@handlers/types";
@@ -5,6 +19,7 @@ import { serveFavicon } from "@handlers/favicon-serve";
 import { HTTPS_REDIRECT_STATUS } from "@handlers/constants";
 import { needsHttpsRedirect, respondUsingRule } from "@handlers/response";
 import { normalisePath, safeDecode } from "@handlers/utils";
+import { notFoundPageHtml } from "@handlers/templates";
 
 export async function handleRedirectRequest(request: Request, options: HandlerOptions = {}): Promise<Response> {
   const runtime = resolveRuntimeOptions(options);
@@ -57,11 +72,14 @@ export async function handleRedirectRequest(request: Request, options: HandlerOp
     }
   }
 
-  return new Response("404 Not Found - 链接不存在", {
+  return new Response(notFoundPageHtml, {
     status: 404,
-    headers: { "Content-Type": "text/plain; charset=utf-8" }
+    headers: { 
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "public, max-age=60"
+    }
   });
 }
 
 export { resolveConfigUrlFromBindings, DEFAULT_CONFIG_URL } from "@handlers/config";
-export type { RedirectsConfig, RouteConfig } from "@handlers/types";
+export type { RedirectsConfig, RouteConfig, HandlerOptions } from "@handlers/types";

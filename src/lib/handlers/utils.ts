@@ -1,3 +1,16 @@
+/**
+ * @file utils.ts
+ * @description
+ * [EN] Utility Functions.
+ * Provides pure helper functions for common operations like JSON parsing, URL decoding,
+ * path normalization, and data type coercion.
+ *
+ * [CN] 工具函数。
+ * 提供纯辅助函数，用于 JSON 解析、URL 解码、路径标准化和数据类型转换等常见操作。
+ *
+ * @see {@link https://github.com/IGCyukira/i0c.cc} for repository info.
+ */
+
 import { RouteConfig, RouteValue, RouteValueEntry } from "./types";
 
 export function isRecord(value: unknown): value is Record<string, unknown> {
