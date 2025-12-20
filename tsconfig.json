@@ -8,7 +8,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@handlers/*": ["src/lib/handlers/*"],
+      "@handlers/*": ["src/lib/handlers/*"]
     },
     "allowJs": true,
     "checkJs": false,
