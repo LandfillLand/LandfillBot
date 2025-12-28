@@ -74,7 +74,7 @@ export async function handleRedirectRequest(request: Request, options: HandlerOp
       if (targetUrl) {
         const reqClone = request.clone() as Request;
         const task = async () => {
-          const response = await respondUsingRule(reqClone, rule, targetUrl!, runtime);
+          const response = await respondUsingRule(reqClone, rule, targetUrl!, runtime, base);
 
           if (rule.type === "proxy") {
             if (response.status === 404) {

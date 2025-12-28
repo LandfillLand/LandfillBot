@@ -19,15 +19,26 @@ export function needsHttpsRedirect(url: URL): boolean {
   return url.protocol !== "https:" || url.hostname.startsWith("www.");
 }
 
-export async function respondUsingRule(request: Request, rule: NormalizedRule, targetUrl: string, runtime: ResolvedRuntime): Promise<Response> {
+export async function respondUsingRule(
+  request: Request, 
+  rule: NormalizedRule, 
+  targetUrl: string, 
+  runtime: ResolvedRuntime,
+  basePath?: string
+): Promise<Response> {
   if (rule.type === "proxy") {
-    return proxyRequest(request, targetUrl, runtime);
+    return proxyRequest(request, targetUrl, runtime, basePath);
   }
 
   return redirectResponse(targetUrl, rule.status);
 }
 
-export async function proxyRequest(request: Request, targetUrl: string, runtime: ResolvedRuntime): Promise<Response> {
+export async function proxyRequest(
+  request: Request, 
+  targetUrl: string, 
+  runtime: ResolvedRuntime,
+  basePath: string = ""
+): Promise<Response> {
   const headers = new Headers(request.headers);
   const targetUrlObj = new URL(targetUrl);
 
@@ -73,6 +84,11 @@ export async function proxyRequest(request: Request, targetUrl: string, runtime:
   if (setCookie) {
     const fixedCookie = setCookie.replace(/;\s*domain=[^;]+/ig, "");
     responseHeaders.set("set-cookie", fixedCookie);
+  }
+
+  const location = responseHeaders.get("Location");
+  if (location && basePath && basePath !== "/" && location.startsWith("/") && !location.startsWith("//")) {
+    responseHeaders.set("Location", `${basePath}${location}`);
   }
 
   return new Response(response.body, {
