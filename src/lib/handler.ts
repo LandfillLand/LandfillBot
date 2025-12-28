@@ -62,18 +62,24 @@ export async function handleRedirectRequest(request: Request, options: HandlerOp
         continue;
       }
 
+      let targetUrl: string | null = null;
       const match = decodedPath.match(regex);
+
       if (match) {
         const resolved = applyTemplate(rule.target, match, names);
-        const finalUrl = appendOriginalQuery(resolved, url.search);
-        return await respondUsingRule(request, rule, finalUrl, runtime);
+        targetUrl = appendOriginalQuery(resolved, url.search);
+      } else if (rule.type === "prefix" && !isParam) {
+        targetUrl = resolvePrefixTarget(decodedPath, url.search, rule, base);
       }
 
-      if (rule.type === "prefix" && !isParam) {
-        const redirectTarget = resolvePrefixTarget(decodedPath, url.search, rule, base);
-        if (redirectTarget) {
-          return await respondUsingRule(request, rule, redirectTarget, runtime);
+      if (targetUrl) {
+        const response = await respondUsingRule(request, rule, targetUrl, runtime);
+
+        if (rule.type === "proxy" && response.status === 404) {
+          continue; 
         }
+
+        return response;
       }
     }
 
