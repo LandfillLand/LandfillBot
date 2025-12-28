@@ -12,7 +12,7 @@
  * @see {@link https://github.com/IGCyukira/i0c.cc} for repository info.
  */
 
-import { DEFAULT_STATUS, HSTS_HEADER_VALUE, HTTPS_REDIRECT_STATUS } from "./constants";
+import { DEFAULT_STATUS, HSTS_HEADER_VALUE } from "./constants";
 import { NormalizedRule, ResolvedRuntime } from "./types";
 
 export function needsHttpsRedirect(url: URL): boolean {
@@ -29,22 +29,51 @@ export async function respondUsingRule(request: Request, rule: NormalizedRule, t
 
 export async function proxyRequest(request: Request, targetUrl: string, runtime: ResolvedRuntime): Promise<Response> {
   const headers = new Headers(request.headers);
+  const targetUrlObj = new URL(targetUrl);
+
+  headers.delete("host");
+
+  if (headers.has("origin")) {
+    headers.set("origin", targetUrlObj.origin);
+  }
+  if (headers.has("referer")) {
+    headers.set("referer", targetUrl);
+  }
+
   headers.set("x-forwarded-host", request.headers.get("host") ?? "");
   headers.set("x-forwarded-proto", "https");
+  headers.delete("cf-connecting-ip");
+  headers.delete("cf-ipcountry");
+  headers.delete("cf-ray");
+  headers.delete("cf-visitor");
 
   const forwarded = new Request(targetUrl, {
     method: request.method,
     headers,
     body: request.body,
-    redirect: "manual"
+    redirect: "manual" 
   });
 
-  const response = await runtime.fetchImpl(forwarded);
+  let response: Response;
+  try {
+    response = await runtime.fetchImpl(forwarded);
+  } catch (e) {
+    console.error(`Proxy fetch failed for ${targetUrl}:`, e);
+    return new Response("Bad Gateway: Failed to fetch from upstream.", { status: 502 });
+  }
+  
   const responseHeaders = new Headers(response.headers);
+
   responseHeaders.delete("content-security-policy");
   responseHeaders.delete("content-security-policy-report-only");
-  responseHeaders.delete("x-frame-options");
+  responseHeaders.delete("x-frame-options"); 
   responseHeaders.set("Strict-Transport-Security", HSTS_HEADER_VALUE);
+
+  const setCookie = responseHeaders.get("set-cookie");
+  if (setCookie) {
+    const fixedCookie = setCookie.replace(/;\s*domain=[^;]+/ig, "");
+    responseHeaders.set("set-cookie", fixedCookie);
+  }
 
   return new Response(response.body, {
     status: response.status,
