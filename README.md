@@ -26,6 +26,16 @@ After deploying:
 
 Need a custom runtime? Import `handleRedirectRequest` from [src/lib/handler.ts](src/lib/handler.ts) and call it with your own `Request` object plus optional `HandlerOptions` (for example, to override the config URL or provide a custom cache implementation).
 
+## Configuration
+
+## SEO Configuration
+
+- `ROBOTS_POLICY`: Controls the `robots.txt` policy.
+  - `allow`: Generates `Allow: /` and includes `Sitemap`.
+  - Default or other values: Outputs `Disallow: /` and omits `Sitemap`.
+  - When `ROBOTS_POLICY=allow`, the runtime generates a `robots.txt` file with `Allow: /` and includes a `Sitemap` entry pointing to `/sitemap.xml`.
+  - For other values or when unset, the runtime generates `Disallow: /` in `robots.txt` and disables the `sitemap.xml` endpoint.
+
 ## Configure the redirects source
 
 You can override the default GitHub location without touching the code. Set any of the environment variables below; the runtime will pick them up automatically on Cloudflare (Worker bindings) or Vercel (process.env).

@@ -14,6 +14,7 @@
 
 import { loadConfig, resolveRuntimeOptions } from "@handlers/loader";
 import { applyTemplate, appendOriginalQuery, buildCompiledList, flattenSlots, getSlotSource, resolvePrefixTarget } from "@handlers/matcher";
+import { generateRobots, generateSitemapXml, isRobotsAllowed } from "@handlers/seo";
 import { HandlerOptions, RouteValueEntry } from "@handlers/types";
 import { serveFavicon } from "@handlers/favicon-serve";
 import { HTTPS_REDIRECT_STATUS } from "@handlers/constants";
@@ -46,6 +47,33 @@ export async function handleRedirectRequest(request: Request, options: HandlerOp
       return new Response("503 No Slots configured", {
         status: 503,
         headers: { "Content-Type": "text/plain; charset=utf-8" }
+      });
+    }
+
+    if (path === "/robots.txt" || path === "/sitemap.xml") {
+      const rawRules: Record<string, RouteValueEntry> = {};
+      flattenSlots(slotSource, rawRules);
+      const origin = url.origin;
+
+      if (path === "/robots.txt") {
+        const robots = generateRobots(origin, runtime.envBindings);
+        return new Response(robots, {
+          status: 200,
+          headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" }
+        });
+      }
+
+      if (!isRobotsAllowed(runtime.envBindings)) {
+        return new Response("Sitemap disabled", {
+          status: 404,
+          headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=300" }
+        });
+      }
+
+      const sitemap = generateSitemapXml(origin, rawRules);
+      return new Response(sitemap, {
+        status: 200,
+        headers: { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=3600" }
       });
     }
 

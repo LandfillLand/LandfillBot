@@ -69,6 +69,7 @@ export interface HandlerOptions {
   cacheTtlSeconds?: number;
   fetchImpl?: typeof fetch;
   fetchInit?: RequestInit;
+  envBindings?: Record<string, unknown>;
   waitUntil?(promise: Promise<unknown>): void;
   now?: () => number;
 }
@@ -79,6 +80,7 @@ export interface ResolvedRuntime {
   cacheTtlSeconds: number;
   fetchImpl: typeof fetch;
   fetchInit?: RequestInit;
+  envBindings?: Record<string, unknown>;
   waitUntil?: (promise: Promise<unknown>) => void;
   now: () => number;
 }

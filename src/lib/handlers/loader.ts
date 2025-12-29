@@ -36,6 +36,7 @@ export function resolveRuntimeOptions(options: HandlerOptions): ResolvedRuntime 
     cacheTtlSeconds,
     fetchImpl,
     fetchInit: options.fetchInit,
+    envBindings: options.envBindings,
     waitUntil: options.waitUntil,
     now
   };

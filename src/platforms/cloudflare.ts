@@ -17,6 +17,9 @@ const worker = {
     if (configUrl) {
       options.configUrl = configUrl;
     }
+    if (env && typeof env === "object") {
+      options.envBindings = env as Record<string, unknown>;
+    }
     return handleRedirectRequest(request, options);
   }
 };

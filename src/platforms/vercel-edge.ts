@@ -16,7 +16,12 @@ export function createVercelRouteHandler(options?: HandlerOptions) {
     const bindings = getProcessEnv();
     const resolvedUrl = options?.configUrl ?? resolveConfigUrlFromBindings(bindings);
     const finalOptions = resolvedUrl && resolvedUrl !== options?.configUrl ? { ...options, configUrl: resolvedUrl } : options;
-    return handleRedirectRequest(request, finalOptions);
+    const base = finalOptions ?? {};
+    const merged: HandlerOptions = {
+      ...base,
+      envBindings: base.envBindings ?? bindings
+    };
+    return handleRedirectRequest(request, merged);
   };
 }
 
