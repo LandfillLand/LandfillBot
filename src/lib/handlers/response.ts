@@ -47,6 +47,7 @@ export async function proxyRequest(
   let currentTarget = targetUrl;
   let redirectCount = 0;
   let lastResponse: Response | null = null;
+
   let bodyBuffer: ArrayBuffer | undefined;
   const originalMethod = request.method.toUpperCase();
   if (originalMethod !== "GET" && originalMethod !== "HEAD" && request.body) {
@@ -151,7 +152,25 @@ export async function proxyRequest(
     responseHeaders.set("Location", finalLocation);
   }
 
-  return new Response(lastResponse.body, {
+  const contentType = responseHeaders.get("content-type") || "";
+  const shouldRewriteHtml = basePath && basePath !== "/" && contentType.includes("text/html");
+
+  if (!shouldRewriteHtml) {
+    return new Response(lastResponse.body, {
+      status: lastResponse.status,
+      headers: responseHeaders
+    });
+  }
+
+  const html = await lastResponse.text();
+  const prefix = basePath || "";
+  const rewrittenHtml = html.replace(/(href|src|action)="\/((?!\/|#|\.\/|\.\.\/)[^"]*)"/g, (_, attr, pathPart) => {
+    return `${attr}="${prefix}/${pathPart}"`;
+  }).replace(/<base\s+href="\/"\s*>/gi, `<base href="${prefix}/">`);
+
+  responseHeaders.delete("content-length");
+
+  return new Response(rewrittenHtml, {
     status: lastResponse.status,
     headers: responseHeaders
   });
