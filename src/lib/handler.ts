@@ -95,7 +95,7 @@ export async function handleRedirectRequest(request: Request, options: HandlerOp
       if (match) {
         const resolved = applyTemplate(rule.target, match, names);
         targetUrl = appendOriginalQuery(resolved, url.search);
-      } else if ((rule.type === "prefix" || rule.type === "proxy") && !isParam) {
+      } else if (rule.type === "prefix" && !isParam) {
         targetUrl = resolvePrefixTarget(decodedPath, url.search, rule, base);
       }
 
