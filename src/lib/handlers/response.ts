@@ -41,6 +41,7 @@ export async function proxyRequest(
 ): Promise<Response> {
   const headers = new Headers(request.headers);
   const targetUrlObj = new URL(targetUrl);
+  const originalHost = request.headers.get("host") ?? "";
 
   headers.delete("host");
 
@@ -75,6 +76,10 @@ export async function proxyRequest(
   
   const responseHeaders = new Headers(response.headers);
 
+  // 调试：记录上游状态码与原始 Location
+  responseHeaders.set("x-upstream-status", String(response.status));
+  responseHeaders.set("x-upstream-location", response.headers.get("Location") ?? "");
+
   responseHeaders.delete("content-security-policy");
   responseHeaders.delete("content-security-policy-report-only");
   responseHeaders.delete("x-frame-options"); 
@@ -87,8 +92,22 @@ export async function proxyRequest(
   }
 
   const location = responseHeaders.get("Location");
-  if (location && basePath && basePath !== "/" && location.startsWith("/") && !location.startsWith("//")) {
-    responseHeaders.set("Location", `${basePath}${location}`);
+  if (location) {
+    // 如果上游 Location 是指向 api.revaea.com 的绝对地址，改写为当前请求域名，路径保持不变
+    try {
+      const locUrl = new URL(location, targetUrlObj);
+      if (locUrl.origin === targetUrlObj.origin && originalHost) {
+        const rewritten = `https://${originalHost}${locUrl.pathname}${locUrl.search}`;
+        responseHeaders.set("Location", rewritten);
+      }
+    } catch {
+      // 无法解析为 URL 时，保持原样
+    }
+
+    const finalLocation = responseHeaders.get("Location") ?? location;
+    if (basePath && basePath !== "/" && finalLocation.startsWith("/") && !finalLocation.startsWith("//")) {
+      responseHeaders.set("Location", `${basePath}${finalLocation}`);
+    }
   }
 
   return new Response(response.body, {
