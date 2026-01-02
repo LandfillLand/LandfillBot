@@ -11,7 +11,7 @@
  * @see {@link https://github.com/IGCyukira/i0c.cc} for repository info.
  */
 
-import { RouteConfig, RouteValue, RouteValueEntry } from "./types";
+import { CompiledEntry, RouteConfig, RouteValue, RouteValueEntry } from "./types";
 
 export function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -68,4 +68,45 @@ export function coerceRouteValues(input: unknown): RouteValue[] {
   }
 
   return [];
+}
+
+export function inferEffectivePath(decodedPath: string, headers: Headers, compiledList: CompiledEntry[]): string {
+  let effectivePath = decodedPath;
+  const isRootFrameworkAsset = /^\/(_next|_nuxt)(\/|$)/.test(decodedPath);
+  const referer = headers.get("referer") || headers.get("referrer");
+
+  if (isRootFrameworkAsset && referer) {
+    try {
+      const refUrl = new URL(referer);
+      const refPath = normalisePath(refUrl.pathname);
+
+      let bestBase: string | null = null;
+      for (const entry of compiledList) {
+        if (entry.rule.type !== "proxy") continue;
+        const base = entry.base;
+        if (base === "/") continue;
+        if (refPath === base || refPath.startsWith(`${base}/`)) {
+          if (!bestBase || base.length > bestBase.length) {
+            bestBase = base;
+          }
+        }
+      }
+
+      if (bestBase) {
+        effectivePath = `${bestBase}${decodedPath}`;
+      }
+    } catch {
+      // ignore invalid referer
+    }
+  }
+
+  return effectivePath;
+}
+
+export function isLikelyStaticAssetPath(pathname: string): boolean {
+  return (
+    /(?:^|\/)(_next|_nuxt)(?:\/|$)/.test(pathname) ||
+    /(?:^|\/)(assets|static|images|img|fonts)(?:\/|$)/i.test(pathname) ||
+    /\.(?:js|mjs|css|map|png|jpe?g|gif|webp|svg|ico|woff2?|ttf|otf|eot)$/i.test(pathname)
+  );
 }

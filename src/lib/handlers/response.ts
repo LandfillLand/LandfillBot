@@ -19,6 +19,10 @@ export function needsHttpsRedirect(url: URL): boolean {
   return url.protocol !== "https:" || url.hostname.startsWith("www.");
 }
 
+export function shouldFallbackProxy(response: Response): boolean {
+  return response.status === 404 || response.status >= 500;
+}
+
 export async function respondUsingRule(
   request: Request, 
   rule: NormalizedRule, 

@@ -13,13 +13,13 @@
  */
 
 import { loadConfig, resolveRuntimeOptions } from "@handlers/loader";
-import { applyTemplate, appendOriginalQuery, buildCompiledList, flattenSlots, getSlotSource, resolvePrefixTarget } from "@handlers/matcher";
+import { applyTemplate, appendOriginalQuery, buildCompiledList, collectProxyRaceCandidates, flattenSlots, getSlotSource, resolvePrefixTarget } from "@handlers/matcher";
 import { generateRobots, generateSitemapXml, isRobotsAllowed } from "@handlers/seo";
 import { HandlerOptions, RouteValueEntry } from "@handlers/types";
 import { serveFavicon } from "@handlers/favicon-serve";
 import { HTTPS_REDIRECT_STATUS } from "@handlers/constants";
-import { needsHttpsRedirect, respondUsingRule } from "@handlers/response";
-import { normalisePath, safeDecode } from "@handlers/utils";
+import { needsHttpsRedirect, respondUsingRule, shouldFallbackProxy } from "@handlers/response";
+import { inferEffectivePath, isLikelyStaticAssetPath, normalisePath, safeDecode } from "@handlers/utils";
 import { notFoundPageHtml } from "@handlers/templates";
 
 export async function handleRedirectRequest(request: Request, options: HandlerOptions = {}): Promise<Response> {
@@ -83,11 +83,8 @@ export async function handleRedirectRequest(request: Request, options: HandlerOp
     const compiledList = buildCompiledList(rawRules);
     const decodedPath = safeDecode(path);
 
-    // 静态资源判定
-    const isStaticAssetPath =
-      /(?:^|\/)(_next|_nuxt)(?:\/|$)/.test(decodedPath) ||
-      /(?:^|\/)(assets|static|images|img|fonts)(?:\/|$)/i.test(decodedPath) ||
-      /\.(?:js|mjs|css|map|png|jpe?g|gif|webp|svg|ico|woff2?|ttf|otf|eot)$/i.test(decodedPath);
+    const effectivePath = inferEffectivePath(decodedPath, request.headers, compiledList);
+    const isStaticAssetPath = isLikelyStaticAssetPath(effectivePath);
 
     for (let index = 0; index < compiledList.length; index += 1) {
       const item = compiledList[index];
@@ -95,52 +92,33 @@ export async function handleRedirectRequest(request: Request, options: HandlerOp
       if (!rule.target) continue;
 
       let targetUrl: string | null = null;
-      const match = decodedPath.match(regex);
+      const match = effectivePath.match(regex);
 
       if (match) {
         const resolved = applyTemplate(rule.target, match, names);
         targetUrl = appendOriginalQuery(resolved, url.search);
       } else if ((rule.type === "prefix" || rule.type === "proxy") && !isParam) {
-        targetUrl = resolvePrefixTarget(decodedPath, url.search, rule, base);
+        targetUrl = resolvePrefixTarget(effectivePath, url.search, rule, base);
       }
 
       if (!targetUrl) continue;
 
       if (isStaticAssetPath && rule.type === "proxy") {
-        const candidates: Array<{ base: string; rule: typeof rule; targetUrl: string }> = [{ base, rule, targetUrl }];
-        let scan = index + 1;
-
-        while (scan < compiledList.length) {
-          const next = compiledList[scan];
-          if (next.base !== base) break;
-          if (!next.rule.target) {
-            scan += 1;
-            continue;
-          }
-
-          let nextTarget: string | null = null;
-          const nextMatch = decodedPath.match(next.regex);
-          if (nextMatch) {
-            const resolved = applyTemplate(next.rule.target, nextMatch, next.names);
-            nextTarget = appendOriginalQuery(resolved, url.search);
-          } else if ((next.rule.type === "prefix" || next.rule.type === "proxy") && !next.isParam) {
-            nextTarget = resolvePrefixTarget(decodedPath, url.search, next.rule, next.base);
-          }
-
-          if (nextTarget && next.rule.type === "proxy") {
-            candidates.push({ base: next.base, rule: next.rule, targetUrl: nextTarget });
-          }
-
-          scan += 1;
+        const collected = collectProxyRaceCandidates(compiledList, index, effectivePath, url.search);
+        if (!collected) {
+          continue;
         }
+
+        const { candidates, scanEnd } = collected;
 
         if (candidates.length > 1) {
           const tasks = candidates.map(({ rule, targetUrl, base }) => {
             const reqClone = request.clone() as Request;
             return (async () => {
               const response = await respondUsingRule(reqClone, rule, targetUrl, runtime, base);
-              if (response.status === 404) throw new Error("proxy 404");
-              if (response.status >= 500) throw new Error(`proxy ${response.status}`);
+              if (shouldFallbackProxy(response)) {
+                throw new Error(`proxy ${response.status}`);
+              }
               return response;
             })();
           });
@@ -149,20 +127,19 @@ export async function handleRedirectRequest(request: Request, options: HandlerOp
             const raced = await Promise.any(tasks);
             return raced;
           } catch {
-            index = scan - 1;
+            index = scanEnd - 1;
             continue;
           }
         }
 
-        index = scan - 1;
+        index = scanEnd - 1;
       }
 
       const reqClone = request.clone() as Request;
       const response = await respondUsingRule(reqClone, rule, targetUrl, runtime, base);
 
       if (rule.type === "proxy") {
-        if (response.status === 404) continue;
-        if (response.status >= 500) continue;
+        if (shouldFallbackProxy(response)) continue;
       }
 
       return response;
