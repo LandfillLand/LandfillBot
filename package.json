@@ -2,6 +2,9 @@
   "name": "i0c-redirect-worker",
   "version": "0.1.0",
   "private": true,
+  "overrides": {
+    "qs": "6.14.1"
+  },
   "scripts": {
     "build": "tsup --config tsup.config.ts && node scripts/post-build.mjs",
     "dev:cf": "wrangler dev",
