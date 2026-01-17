@@ -1,21 +1,15 @@
-name: Sync Upstream (Daily Rotating, auto-detect branch)
+name: Daily Roulette (Shapeshifter) 🎲
 
 on:
   schedule:
-    - cron: '0 0 * * *' 
+    - cron: '0 0 * * *'
   workflow_dispatch:
-
-concurrency:
-  group: sync-upstream-${{ github.repository }}
-  cancel-in-progress: true
 
 permissions:
   contents: write
-  pull-requests: write
 
 env:
-  TARGET_BRANCH: main
-  # REPO_LIST entries supports "owner/repo" or "owner/repo:branch"
+  # 📝 这里放大名单
   REPO_LIST: |
     igcyukira/i0c.cc
     astrbotdevs/astrbot:master
@@ -33,206 +27,106 @@ env:
     animate-css/animate.css
     airbnb/javascript
     public-apis/public-apis
-    # --- 🏛️ 历史与极客圣经 (镇宅专用) ---
-    chrislgarry/Apollo-11        # 阿波罗11号登月代码 (汇编语言，硬核！)
-    id-Software/DOOM             # 毁灭战士 (DOOM) 源码 (游戏界的传奇)
-    bitcoin/bitcoin              # 比特币源码 (这就是赛博黄金！)
-    git/git                      # Git 自己的源码 (我 变 我 自 己)
-    
-    # --- 🤣 程序员的黑色幽默 (一看就懂) ---
-    nvbn/thefuck                 # 输错命令时自动纠正的神器 (名字很暴躁，功能很暖心)
-    denysdovhan/wtfjs            # JS 里的各种奇葩特性 (一边看一边怀疑人生)
-    EbookFoundation/free-programming-books # 史上 Star 最多的仓库 (全是书)
-    996icu/996.ICU               # (懂的都懂，程序员防身术)
-    
-    # --- 🎨 视觉与好玩的前端 ---
-    mrdoob/three.js              # 3D 库，代码里全是魔法
-    d3/d3                        # 数据可视化，看着很高级
-    goldbergyoni/nodebestpractices # Node.js 最佳实践 (假装自己在努力学习)
-    
-    # --- 🐈 奇奇怪怪的可爱东西 ---
-    sindresorhus/awesome         # 各种“Awesome”列表的祖宗
-    ruanyf/weekly                # 阮一峰的技术周刊 (很有文化气息)
-    getify/You-Dont-Know-JS      # 你不知道的 JS (经典教程)
-    
-  # PAT must be stored in repository secrets as PAT with repo read & write permissions
-  PAT: ${{ secrets.PAT }}
+    # --- 🏛️ 历史与极客圣经 ---
+    chrislgarry/Apollo-11
+    id-Software/DOOM
+    bitcoin/bitcoin
+    git/git
+    # --- 🤣 黑色幽默 ---
+    nvbn/thefuck
+    denysdovhan/wtfjs
+    EbookFoundation/free-programming-books
+    996icu/996.ICU
+    # --- 🎨 前端 ---
+    mrdoob/three.js
+    d3/d3
+    goldbergyoni/nodebestpractices
+    # --- 🐈 奇奇怪怪 ---
+    sindresorhus/awesome
+    ruanyf/weekly
+    getify/You-Dont-Know-JS
 
 jobs:
-  sync:
+  shapeshift:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout target branch (full history)
+      - name: Checkout self
         uses: actions/checkout@v6
         with:
-          ref: ${{ env.TARGET_BRANCH }}
-          fetch-depth: 0
           token: ${{ secrets.PAT }}
+          fetch-depth: 0
 
-      - name: Ensure git user and install deps
+      - name: Setup Git User
         run: |
-          git config --global user.name 'IGCrystal-G'
-          git config --global user.email 'cacheigcrystal@gmail.com'
-          sudo apt-get update -y
-          sudo apt-get install -y jq
+          git config --global user.name 'Ditto-Bot'
+          git config --global user.email 'ditto@pokemon.com'
 
-      - name: Choose upstream repo of the day and sync (auto-detect branch)
+      - name: Roll the Dice & Transform 🎲
         env:
           PAT: ${{ secrets.PAT }}
-          REPO_LIST: ${{ env.REPO_LIST }}
-          TARGET_BRANCH: ${{ env.TARGET_BRANCH }}
         run: |
-          set -euxo pipefail
-
-          # parse repo list
-          # 使用 grep -v 过滤掉纯注释行和空行
-          mapfile -t REPOS < <(echo "$REPO_LIST" | grep -v '^\s*#' | grep -v '^\s*$')
+          # 1. 解析列表 (带清洗)
+          mapfile -t REPOS < <(echo "${{ env.REPO_LIST }}" | grep -v '^\s*#' | grep -v '^\s*$')
           
-          COUNT=${#REPOS[@]}
-          if [ "$COUNT" -eq 0 ]; then
-            echo "REPO_LIST is empty; nothing to do."
+          SIZE=${#REPOS[@]}
+          if [ "$SIZE" -eq 0 ]; then
+            echo "❌ Repo list is empty!"
             exit 1
           fi
 
-          # pick rotating index based on epoch days (changes every day)
+          # 2. 随机抽选
           DAY=$(( $(date -u +%s) / 86400 ))
-          IDX=$(( DAY % COUNT ))
-          RAW_ENTRY="${REPOS[$IDX]}"
-          
+          INDEX=$(( DAY % SIZE ))
+          RAW_ENTRY="${REPOS[$INDEX]}"
           ENTRY=$(echo "${RAW_ENTRY%%#*}" | xargs)
           
-          echo "Selected entry (cleaned): '$ENTRY' (from raw: '$RAW_ENTRY')"
+          echo "🎰 Dice rolled: $INDEX / $SIZE"
+          echo "🎯 Today's Target: $ENTRY"
 
-          # support optional ":branch" suffix
+          # 处理分支后缀 (repo:branch)
           if [[ "$ENTRY" == *":"* ]]; then
-            UPSTREAM_REPO="${ENTRY%%:*}"
-            UPSTREAM_BRANCH="${ENTRY##*:}"
-            echo "Using explicit branch: ${UPSTREAM_BRANCH} for ${UPSTREAM_REPO}"
+            TARGET_REPO="${ENTRY%%:*}"
+            TARGET_BRANCH="${ENTRY##*:}"
           else
-            UPSTREAM_REPO="$ENTRY"
-            # query repository to get default branch via GitHub API (requires PAT)
-            API_URL="https://api.github.com/repos/${UPSTREAM_REPO}"
-            echo "Detecting default branch for ${UPSTREAM_REPO} via GitHub API..."
-            
-            # 增加 -f 参数，如果 API 报错直接失败，不让 jq 解析错误信息
-            RESPONSE=$(curl -s -f -H "Authorization: token ${PAT}" -H "Accept: application/vnd.github+json" "${API_URL}" || echo "")
-            
-            if [ -n "$RESPONSE" ]; then
-                DEFAULT_BRANCH=$(echo "$RESPONSE" | jq -r '.default_branch // empty')
-            else
-                DEFAULT_BRANCH=""
-            fi
-
-            if [ -z "$DEFAULT_BRANCH" ] || [ "$DEFAULT_BRANCH" = "null" ]; then
-              echo "⚠️ Failed to detect default branch via API (maybe 404 or limit), falling back to 'main'"
-              UPSTREAM_BRANCH="main"
-            else
-              UPSTREAM_BRANCH="$DEFAULT_BRANCH"
-            fi
-            echo "Detected upstream branch: ${UPSTREAM_BRANCH}"
+            TARGET_REPO="$ENTRY"
+            TARGET_BRANCH="" 
           fi
 
-          # add upstream remote (fresh)
-          git remote remove upstream || true
-          git remote add upstream "https://github.com/${UPSTREAM_REPO}.git"
+          # -------------------------------------------------------
+          # 3. 💥 拆迁办进场 (除了 .git 和 .github 全删掉！)
+          # -------------------------------------------------------
+          echo "💥 Clearing current files..."
+          # 这一步保证了不会出现 Merge Conflict，因为我们把旧家拆了！
+          find . -maxdepth 1 ! -name '.git' ! -name '.github' ! -name '.' -exec rm -rf {} +
 
-          # fetch that branch (full fetch)
-          git fetch upstream "${UPSTREAM_BRANCH}" || { echo "fetch upstream ${UPSTREAM_BRANCH} failed"; exit 1; }
-
-          # quick exit if upstream already merged into HEAD
-          if git merge-base --is-ancestor "upstream/${UPSTREAM_BRANCH}" HEAD 2>/dev/null; then
-            echo "Upstream already merged into HEAD — nothing to do."
-            exit 0
-          fi
-
-          # preserve local workflow file content so we can restore it after merge
-          PRESERVE_DIR="$(mktemp -d)"
-          mkdir -p "$PRESERVE_DIR"
-          if git show HEAD:.github/workflows/sync-upstream.yml > "$PRESERVE_DIR/sync-upstream.yml" 2>/dev/null; then
-            echo "Preserved current workflow file."
+          # -------------------------------------------------------
+          # 4. 📥 偷天换日 (Clone 别人的代码)
+          # -------------------------------------------------------
+          echo "📥 Cloning $TARGET_REPO..."
+          
+          if [ -n "$TARGET_BRANCH" ]; then
+            git clone --depth 1 -b "$TARGET_BRANCH" "https://github.com/$TARGET_REPO.git" temp_clone
           else
-            mkdir -p .github/workflows || true
-            if [ -f .github/workflows/sync-upstream.yml ]; then
-              cp .github/workflows/sync-upstream.yml "$PRESERVE_DIR/sync-upstream.yml"
-            else
-              printf '%s\n' "# preserved placeholder" > "$PRESERVE_DIR/sync-upstream.yml"
-            fi
+            git clone --depth 1 "https://github.com/$TARGET_REPO.git" temp_clone
           fi
 
-          # Attempt a merge without committing to detect conflicts
-          if git merge --no-commit --no-ff --allow-unrelated-histories "upstream/${UPSTREAM_BRANCH}"; then
-            git commit -m "chore: sync upstream ${UPSTREAM_REPO}@${UPSTREAM_BRANCH} into ${TARGET_BRANCH}"
+          # 5. 搬运
+          shopt -s dotglob
+          rm -rf temp_clone/.git    # 扔掉对方的历史
+          rm -rf temp_clone/.github # 扔掉对方的 Action (防止冲突)
 
-            # restore our workflow file to ensure this workflow stays intact
-            cp "$PRESERVE_DIR/sync-upstream.yml" .github/workflows/sync-upstream.yml || true
-            if ! git diff --quiet -- .github/workflows/sync-upstream.yml; then
-              git add .github/workflows/sync-upstream.yml
-              git commit -m "chore: preserve local workflow file after merging ${UPSTREAM_REPO}" || true
-            fi
+          # 把对方的东西搬到我们家
+          mv temp_clone/* . || echo "Target repo might be empty."
+          rm -rf temp_clone
 
-            # cleanup git objects
-            git repack -a -d || true
-            git gc --prune=now --aggressive || true
-
-            # push directly to target branch (main). retry a few times on transient errors.
-            PUSH_ATTEMPTS=0
-            until [ "$PUSH_ATTEMPTS" -ge 5 ]; do
-              git push origin "HEAD:${TARGET_BRANCH}" && break
-              PUSH_ATTEMPTS=$((PUSH_ATTEMPTS+1))
-              echo "Push attempt $PUSH_ATTEMPTS failed, retrying in 5s..."
-              sleep 5
-            done
-            if [ "$PUSH_ATTEMPTS" -ge 5 ]; then
-              echo "Direct push failed after multiple attempts; creating a PR branch as fallback."
-              BRANCH_NAME="sync-upstream-$(date +%Y%m%d-%H%M%S)"
-              git checkout -b "$BRANCH_NAME"
-              git push --set-upstream origin "$BRANCH_NAME"
-              API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}"
-              OWNER=${GITHUB_REPOSITORY%%/*}
-              CREATE_PR_RESP=$(curl -s -X POST \
-                -H "Authorization: token ${PAT}" \
-                -H "Accept: application/vnd.github+json" \
-                "${API_URL}/pulls" \
-                -d "{\"title\":\"chore: sync upstream ${UPSTREAM_REPO}\",\"head\":\"${OWNER}:${BRANCH_NAME}\",\"base\":\"${TARGET_BRANCH}\",\"body\":\"Auto sync from upstream ${UPSTREAM_REPO} — push failed, please review and merge.\"}")
-              echo "Created PR fallback: $CREATE_PR_RESP"
-              exit 0
-            fi
-
-            echo "Merged upstream ${UPSTREAM_REPO}@${UPSTREAM_BRANCH} and pushed to ${TARGET_BRANCH}."
-            exit 0
-
-          else
-            # merge had conflicts. abort and create a conflict branch + PR
-            echo "Merge produced conflicts. Aborting merge and opening PR for manual resolution."
-            git merge --abort || true
-
-            BRANCH_NAME="sync-upstream-$(date +%Y%m%d-%H%M%S)"
-            git checkout -b "$BRANCH_NAME"
-
-            # attempt a merge on the new branch to carry conflict markers for review
-            git merge --no-edit --allow-unrelated-histories "upstream/${UPSTREAM_BRANCH}" || true
-
-            # restore preserved workflow to avoid replacing it with upstream's
-            cp "$PRESERVE_DIR/sync-upstream.yml" .github/workflows/sync-upstream.yml || true
-            git add .github/workflows/sync-upstream.yml || true
-            git commit -m "chore: preserve workflow file (conflict branch for ${UPSTREAM_REPO})" || true
-
-            # repack/gc
-            git repack -a -d || true
-            git gc --prune=now --aggressive || true
-
-            # push conflict branch
-            git push --set-upstream origin "$BRANCH_NAME"
-
-            # create PR for manual conflict resolution
-            API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}"
-            OWNER=${GITHUB_REPOSITORY%%/*}
-            CREATE_PR_RESP=$(curl -s -X POST \
-              -H "Authorization: token ${PAT}" \
-              -H "Accept: application/vnd.github+json" \
-              "${API_URL}/pulls" \
-              -d "{\"title\":\"chore: sync upstream ${UPSTREAM_REPO} (conflicts)\",\"head\":\"${OWNER}:${BRANCH_NAME}\",\"base\":\"${TARGET_BRANCH}\",\"body\":\"Automatic sync from ${UPSTREAM_REPO}@${UPSTREAM_BRANCH} resulted in conflicts. Please resolve the conflicts in branch ${BRANCH_NAME}.\"}")
-
-            echo "Created PR for conflict resolution: $CREATE_PR_RESP"
-            exit 0
-          fi
+          # -------------------------------------------------------
+          # 6. 📝 提交变身结果
+          # -------------------------------------------------------
+          git add .
+          DATE=$(date +%Y-%m-%d)
+          
+          # 提交！
+          git commit -m "🎭 Shapeshift into: $TARGET_REPO ($DATE)" || echo "No changes (Same repo again?)"
+          
+          # 7. 🚀 强推 (覆盖昨天的主分支)
+          git push
