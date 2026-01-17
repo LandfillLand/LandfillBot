@@ -1,9 +1,8 @@
-# .github/workflows/sync-upstream.yml
 name: Sync Upstream (Daily Rotating, auto-detect branch)
 
 on:
   schedule:
-    - cron: '0 0 * * *'   # daily UTC midnight; adjust if needed
+    - cron: '0 0 * * *' 
   workflow_dispatch:
 
 concurrency:
@@ -86,7 +85,9 @@ jobs:
           set -euxo pipefail
 
           # parse repo list
-          mapfile -t REPOS <<<"$REPO_LIST"
+          # 使用 grep -v 过滤掉纯注释行和空行
+          mapfile -t REPOS < <(echo "$REPO_LIST" | grep -v '^\s*#' | grep -v '^\s*$')
+          
           COUNT=${#REPOS[@]}
           if [ "$COUNT" -eq 0 ]; then
             echo "REPO_LIST is empty; nothing to do."
@@ -96,8 +97,11 @@ jobs:
           # pick rotating index based on epoch days (changes every day)
           DAY=$(( $(date -u +%s) / 86400 ))
           IDX=$(( DAY % COUNT ))
-          ENTRY="${REPOS[$IDX]}"
-          echo "Selected entry: $ENTRY (index $IDX of $COUNT)"
+          RAW_ENTRY="${REPOS[$IDX]}"
+          
+          ENTRY=$(echo "${RAW_ENTRY%%#*}" | xargs)
+          
+          echo "Selected entry (cleaned): '$ENTRY' (from raw: '$RAW_ENTRY')"
 
           # support optional ":branch" suffix
           if [[ "$ENTRY" == *":"* ]]; then
@@ -109,9 +113,18 @@ jobs:
             # query repository to get default branch via GitHub API (requires PAT)
             API_URL="https://api.github.com/repos/${UPSTREAM_REPO}"
             echo "Detecting default branch for ${UPSTREAM_REPO} via GitHub API..."
-            DEFAULT_BRANCH=$(curl -s -H "Authorization: token ${PAT}" -H "Accept: application/vnd.github+json" "${API_URL}" | jq -r '.default_branch // empty')
+            
+            # 增加 -f 参数，如果 API 报错直接失败，不让 jq 解析错误信息
+            RESPONSE=$(curl -s -f -H "Authorization: token ${PAT}" -H "Accept: application/vnd.github+json" "${API_URL}" || echo "")
+            
+            if [ -n "$RESPONSE" ]; then
+                DEFAULT_BRANCH=$(echo "$RESPONSE" | jq -r '.default_branch // empty')
+            else
+                DEFAULT_BRANCH=""
+            fi
+
             if [ -z "$DEFAULT_BRANCH" ] || [ "$DEFAULT_BRANCH" = "null" ]; then
-              echo "Failed to detect default branch via API, falling back to 'main'"
+              echo "⚠️ Failed to detect default branch via API (maybe 404 or limit), falling back to 'main'"
               UPSTREAM_BRANCH="main"
             else
               UPSTREAM_BRANCH="$DEFAULT_BRANCH"
