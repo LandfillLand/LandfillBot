@@ -1,51 +1,48 @@
-<p align="left">
-  <img src="https://github.com/Neo-Life/.github/blob/main/img/nebula-sm.jpg?raw=true" alt="Nebula" width="100%">
-</p>
+# Animate.css
 
-# Nebula (Based on [AstrBot](https://github.com/AstrBotDevs/AstrBot)) 
+[![GitHub Version](https://img.shields.io/github/release/animate-css/animate.css.svg?style=for-the-badge)](https://github.com/animate-css/animate.css/releases) [![Github Star](https://img.shields.io/github/stars/animate-css/animate.css.svg?style=for-the-badge)](https://github.com/animate-css/animate.css/stargazers) [![Github Fork](https://img.shields.io/github/forks/animate-css/animate.css.svg?style=for-the-badge)](https://github.com/animate-css/animate.css/network/members) [![License](https://img.shields.io/badge/license-hippocratic%20license-orange.svg?longCache=true&style=for-the-badge)](https://github.com/animate-css/animate.css/blob/main/LICENSE)
 
-## ⚖️ Fork Disclaimer & License Agreement
-> [!Note]
-> This repository is a personal modified fork based on the upstream project.
+> If you need the old docs - v3.x.x and under - you can find it [here](https://github.com/animate-css/animate.css/tree/a8d92e585b1b302f7749809c3308d5e381f9cb17).
 
-### 1. Scope & Purpose Limitation
-All modifications, configuration adjustments, and derivative code within this repository created by **IGCrystal** are intended solely for the developer's personal learning, research, and data backup purposes.
+## _Just-add-water CSS animation_
 
-This modified version is **not intended** to provide public services, stable interfaces, or production environment solutions to any third party. Any acquisition, deployment, or execution of the content of this repository by parties other than the developer is deemed a voluntary personal action and is unrelated to the modifier (**IGCrystal**) or the original upstream author.
+## Installation
 
-### 2. No Warranty
-The modifications contained in this repository are provided **"AS IS"**, without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, or non-infringement.
+Install with npm:
 
-The modifier (**IGCrystal**) makes no commitment to provide continuous maintenance, follow upstream updates, or offer technical support for this fork. You are solely responsible for all risks associated with running this modified version (including, but not limited to, data loss, system failure, or legal risks).
+```shell
+npm install animate.css --save
+```
 
-### 3. License
-As a derivative work of the upstream project, this repository strictly adheres to the **GNU Affero General Public License v3.0 (AGPL-3.0)** adopted by the original project.
+Install with yarn:
 
-* **Inheritance:** All copyright notices and license files from the upstream project are retained within this repository.
-* **Distribution Obligation:** Under the AGPL, if you run this modified version over a network and interact with others, you must disclose your complete source code (including **IGCrystal**'s modifications) to the users interacting with it.
+```shell
+yarn add animate.css
+```
 
-**If you cannot accept the terms of the AGPL or the limitations of this statement, please stop using this repository immediately.**
+## Getting Started
 
----
+You can find the Animate.css documentation on the [website](https://animate.style/).
 
-## ⚖️ 派生版本免责声明与许可协议
-> [!NOTE]
-> **注意**：本仓库是基于上游项目进行的个人修改版本 (Fork)。
+## Accessibility
 
-### 1. 范围与用途限定 (Scope & Purpose Limitation)
-本仓库（Repository）内由 **IGCrystal** 进行的所有修改内容、配置调整及衍生代码，仅供开发者本人进行个人学习、研究及数据备份使用。
+Animate.css supports the [`prefers-reduced-motion` media query](https://webkit.org/blog/7551/responsive-design-for-motion/) so that users with motion sensitivity can opt out of animations. On supported platforms (currently all the majors browsers and OS), users can select "reduce motion" on their operating system preferences and it will turn off CSS transitions for them without any further work required.
 
-本修改版本**不旨在**向任何第三方提供公共服务、稳定接口或生产环境解决方案。任何非本人对本仓库内容的获取、部署或运行行为，均被视为您的个人自发行为，与修改者 (**IGCrystal**) 及原上游作者无关。
+## Core Team
 
-### 2. 无担保声明 (No Warranty)
-本仓库包含的修改内容按 **“原样”** 提供，不附带任何明示或暗示的保证，包括但不限于对适销性、特定用途适用性或非侵权性的保证。
+| ![Daniel Eden](https://avatars2.githubusercontent.com/u/439365?s=460&u=512b4cc5324938ae40bbb8f3b7769d335953cd3a&v=4) | ![Elton Mesquita](https://avatars2.githubusercontent.com/u/5007208?s=460&u=418401ee605824272e5dcb955fd64ea24546a857&v=4) | ![Waren Gonzaga](https://avatars1.githubusercontent.com/u/15052701?s=460&u=9e58364978379536d3f26c4ce5cae1a2a449a0e4&v=4) |
+| --- | --- | --- |
+| [Daniel Eden](https://github.com/daneden) | [Elton Mesquita](https://github.com/eltonmesquita) | [Waren Gonzaga](https://github.com/WarenGonzaga) |
+| Animate.css Creator | Maintainer | Core Contributor |
 
-修改者 (**IGCrystal**) 不承诺对本派生版本进行任何形式的持续维护、跟随上游更新或技术支持。您需自行承担运行本修改版本可能带来的所有风险（包括数据丢失、系统故障或法律风险）。
+## License
 
-### 3. 许可协议 (License)
-本仓库作为上游项目的派生作品，严格遵循原项目采用的 **GNU Affero General Public License v3.0 (AGPL-3.0)** 开源协议。
+Animate.css is licensed under the [Hippocratic License](http://firstdonoharm.dev).
 
-* **继承性**：本仓库内保留了上游项目的所有版权声明及许可文件。
-* **分发义务**：根据 AGPL 协议，如果您在网络环境运行本修改版本并与他人交互，您必须向交互者公开您的完整源代码（包含 **IGCrystal** 的修改部分）。
+## Code of Conduct
 
-**如果您无法接受 AGPL 协议的条款或本声明的限制，请立即停止使用本仓库。**
+This project and everyone participating in it is governed by the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [animate@eltonmesquita.com](mailto:animate@eltonmesquita.com).
+
+## Contributing
+
+Pull requests are the way to go here. We only have two rules for submitting a pull request: match the naming convention (camelCase, categorised [fades, bounces, etc]) and let us see a demo of submitted animations in a [pen](https://codepen.io). That **last one is important**.
