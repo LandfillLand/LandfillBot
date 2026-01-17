@@ -1,8 +1,5 @@
-node_modules/
-dist/
-.vscode/
-.vercel/
-netlify/
-.wrangler/
-i0c.cc-webui/
-.env
+node_modules
+.idea
+coverage
+.vscode
+.DS_Store

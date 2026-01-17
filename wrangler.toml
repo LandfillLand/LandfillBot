@@ -1,7 +1,0 @@
-# wrangler.toml
-name = 'i0c'
-main = "src/platforms/cloudflare.ts"
-compatibility_date = "2025-12-14"
-
-[vars]
-ROBOTS_POLICY = "allow"
