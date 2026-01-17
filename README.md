@@ -1,62 +1,53 @@
-<img src="is-thirteen-logo.png">
+# No Code
 
-_Special thanks to [@casdr](https://github.com/casdr) for the logo_
-# is-thirteen
+No code is the best way to write secure and reliable applications. Write nothing; deploy nowhere.
 
-[![Build Status](https://travis-ci.org/jezen/is-thirteen.svg?branch=master)](https://travis-ci.org/jezen/is-thirteen) 
+## Getting Started
 
-An npm package to check if a number is equal to 13.
+Start by not writing any code.
 
-## Installation
-
-```sh
-npm --save i is-thirteen
 ```
 
-or
-
-```sh
-yarn add is-thirteen
 ```
 
-## Usage
+This is just an example application, but imagine it doing anything you want. Adding new features is easy too:
 
-```javascript
-const isThirteen = require('is-thirteen');
-
-// PLEAS READ THE SOURCE CODE BECAuse we moved fast and broke things
-
-i̶s̶T̶h̶i̶r̶t̶e̶e̶n̶(̶2̶5̶)̶;̶ ̶/̶/̶ ̶f̶a̶l̶s̶e̶
-i̶s̶T̶h̶i̶r̶t̶e̶e̶n̶(̶1̶3̶)̶;̶ ̶/̶/̶ ̶t̶r̶u̶e̶
 ```
 
-```javascript
-const is = require('is-thirteen');
-// Now with elegant syntax.
-
-is(13).thirteen(); // true
-is(12.8).roughly.thirteen(); // true
-is(6).within(10).of.thirteen(); // true
-is(2011).yearOfBirth(); // true
-
-// check your math skillz
-is(4).plus(5).thirteen();      // false
-is(12).plus(1).thirteen();    // true
-is(4).minus(12).thirteen();    // false
-is(14).minus(1).thirteen();    // true
-is(1).times(8).thirteen();    // false
-is(26).divideby(2).thirteen();  // true
 ```
 
-## Test
+The possibilities are endless.
 
-```shell
-npm test
+### Building the Application
+
+Now that you have not done anything it's time to build your application:
+
 ```
 
-## License
+```
 
-[WTFPL](http://www.wtfpl.net/txt/copying/)
+Yep. That's it. You should see the following output:
 
-A helpful tool by [Jezen Thomas](https://jezenthomas.com) with helpful
-help from [Gytis Daujotas](https://twitter.com/gytdau) and many fine folk.
+```
+
+```
+
+### Deploying
+
+While you still have not done anything it's time to deploy your application. By running the following command you can deploy your application absolutely nowhere.
+
+```
+
+```
+
+It's that simple. And when it comes time to scale the application, all you have to do is:
+
+```
+
+```
+
+I know right?
+
+## Contributing
+
+You don't.
