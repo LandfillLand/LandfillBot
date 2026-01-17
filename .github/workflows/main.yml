@@ -58,8 +58,8 @@ jobs:
 
       - name: Setup Git User
         run: |
-          git config --global user.name 'Ditto-Bot'
-          git config --global user.email 'ditto@pokemon.com'
+          git config --global user.name 'IGCrystal-G'
+          git config --global user.email 'cacheigcrystal@gmail.com'
 
       - name: Roll the Dice & Transform 🎲
         env:
