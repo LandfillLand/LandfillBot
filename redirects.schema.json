@@ -1,0 +1,170 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/IGCyukira/i0c.cc/main/redirects.schema.json",
+  "title": "i0c.cc Redirect Slots Configuration",
+  "description": "Schema for redirect and proxy rules consumed by the Cloudflare Worker.",
+  "type": "object",
+  "properties": {
+    "Slots": { "$ref": "#/definitions/slots" },
+    "slots": { "$ref": "#/definitions/slots" },
+    "SLOT": { "$ref": "#/definitions/slots" }
+  },
+  "additionalProperties": true,
+  "anyOf": [
+    { "required": ["Slots"] },
+    { "required": ["slots"] },
+    { "required": ["SLOT"] }
+  ],
+  "definitions": {
+    "slots": {
+      "type": "object",
+      "description": "Collection of redirect rules organised by path-based keys.",
+      "patternProperties": {
+        "^/.*$": { "$ref": "#/definitions/routeEntry" }
+      },
+      "additionalProperties": {
+        "anyOf": [
+          { "$ref": "#/definitions/routeEntry" },
+          { "$ref": "#/definitions/slots" }
+        ]
+      }
+    },
+    "routeEntry": {
+      "description": "A route definition expressed as a string shortcut, object, or array of rules.",
+      "oneOf": [
+        { "$ref": "#/definitions/routeString" },
+        { "$ref": "#/definitions/routeConfig" },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/routeItem" }
+        }
+      ]
+    },
+    "routeItem": {
+      "description": "Single route entry inside an array value.",
+      "oneOf": [
+        { "$ref": "#/definitions/routeString" },
+        { "$ref": "#/definitions/routeConfig" }
+      ]
+    },
+    "routeString": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Shortcut form equivalent to a prefix redirect rule."
+    },
+    "routeConfig": {
+      "type": "object",
+      "description": "Explicit redirect or proxy configuration.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["prefix", "exact", "proxy"],
+          "description": "Route matching mode."
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Destination URL that takes precedence over alias fields.",
+          "format": "uri-reference"
+        },
+        "to": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Alias for target.",
+          "format": "uri-reference"
+        },
+        "url": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Alias for target.",
+          "format": "uri-reference"
+        },
+        "appendPath": {
+          "type": "boolean",
+          "description": "Whether to append the unmatched suffix when using prefix routes."
+        },
+        "status": {
+          "description": "HTTP status code for non-proxy responses.",
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 100,
+              "maximum": 599
+            },
+            {
+              "type": "string",
+              "pattern": "^[0-9]{3}$"
+            }
+          ]
+        },
+        "priority": {
+          "description": "Lower numbers run first when multiple rules share a base path.",
+          "oneOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string",
+              "pattern": "^-?[0-9]+$"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "proxy" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "not": { "required": ["status"] }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "exact" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "not": { "required": ["appendPath"] }
+          }
+        }
+      ],
+      "oneOf": [
+        {
+          "required": ["target"],
+          "not": {
+            "anyOf": [
+              { "required": ["to"] },
+              { "required": ["url"] }
+            ]
+          }
+        },
+        {
+          "required": ["to"],
+          "not": {
+            "anyOf": [
+              { "required": ["target"] },
+              { "required": ["url"] }
+            ]
+          }
+        },
+        {
+          "required": ["url"],
+          "not": {
+            "anyOf": [
+              { "required": ["target"] },
+              { "required": ["to"] }
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.vscode/
+.vercel/
+netlify/
+.wrangler/
+i0c.cc-webui/
+.env
