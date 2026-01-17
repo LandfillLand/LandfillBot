@@ -1,9 +1,9 @@
 # .github/workflows/sync-upstream.yml
-name: Sync Upstream
+name: Sync Upstream (Daily Rotating, auto-detect branch)
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * *'   # daily UTC midnight; adjust if needed
   workflow_dispatch:
 
 concurrency:
@@ -15,17 +15,53 @@ permissions:
   pull-requests: write
 
 env:
-  # configure these to point at the upstream repo and branch you want to sync from
-  UPSTREAM_REPO: igcyukira/i0c.cc
-  UPSTREAM_BRANCH: main
   TARGET_BRANCH: main
-  # PAT must be stored in repository secrets as PAT
+  # REPO_LIST entries supports "owner/repo" or "owner/repo:branch"
+  REPO_LIST: |
+    igcyukira/i0c.cc
+    astrbotdevs/astrbot:master
+    microsoft/vscode
+    torvalds/linux
+    facebook/react
+    kelseyhightower/nocode
+    jdan/98.css
+    excalidraw/excalidraw
+    kamranahmedse/developer-roadmap
+    jezen/is-thirteen
+    trekhleb/javascript-algorithms
+    donnemartin/system-design-primer
+    mrdoob/three.js
+    animate-css/animate.css
+    airbnb/javascript
+    public-apis/public-apis
+    # --- 🏛️ 历史与极客圣经 (镇宅专用) ---
+    chrislgarry/Apollo-11        # 阿波罗11号登月代码 (汇编语言，硬核！)
+    id-Software/DOOM             # 毁灭战士 (DOOM) 源码 (游戏界的传奇)
+    bitcoin/bitcoin              # 比特币源码 (这就是赛博黄金！)
+    git/git                      # Git 自己的源码 (我 变 我 自 己)
+    
+    # --- 🤣 程序员的黑色幽默 (一看就懂) ---
+    nvbn/thefuck                 # 输错命令时自动纠正的神器 (名字很暴躁，功能很暖心)
+    denysdovhan/wtfjs            # JS 里的各种奇葩特性 (一边看一边怀疑人生)
+    EbookFoundation/free-programming-books # 史上 Star 最多的仓库 (全是书)
+    996icu/996.ICU               # (懂的都懂，程序员防身术)
+    
+    # --- 🎨 视觉与好玩的前端 ---
+    mrdoob/three.js              # 3D 库，代码里全是魔法
+    d3/d3                        # 数据可视化，看着很高级
+    goldbergyoni/nodebestpractices # Node.js 最佳实践 (假装自己在努力学习)
+    
+    # --- 🐈 奇奇怪怪的可爱东西 ---
+    sindresorhus/awesome         # 各种“Awesome”列表的祖宗
+    ruanyf/weekly                # 阮一峰的技术周刊 (很有文化气息)
+    getify/You-Dont-Know-JS      # 你不知道的 JS (经典教程)
+    
+  # PAT must be stored in repository secrets as PAT with repo read & write permissions
   PAT: ${{ secrets.PAT }}
 
 jobs:
   sync:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout target branch (full history)
         uses: actions/checkout@v6
@@ -34,130 +70,156 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.PAT }}
 
-      - name: Ensure git user
+      - name: Ensure git user and install deps
         run: |
           git config --global user.name 'IGCrystal-G'
           git config --global user.email 'cacheigcrystal@gmail.com'
-
-      - name: Install dependencies (jq)
-        run: |
           sudo apt-get update -y
           sudo apt-get install -y jq
 
-      - name: Sync from upstream and create/merge PR if needed
+      - name: Choose upstream repo of the day and sync (auto-detect branch)
         env:
           PAT: ${{ secrets.PAT }}
-          UPSTREAM_REPO: ${{ env.UPSTREAM_REPO }}
-          UPSTREAM_BRANCH: ${{ env.UPSTREAM_BRANCH }}
+          REPO_LIST: ${{ env.REPO_LIST }}
           TARGET_BRANCH: ${{ env.TARGET_BRANCH }}
         run: |
           set -euxo pipefail
 
-          # Add upstream remote (ignore error if already exists)
-          git remote add upstream "https://github.com/${UPSTREAM_REPO}.git" || true
+          # parse repo list
+          mapfile -t REPOS <<<"$REPO_LIST"
+          COUNT=${#REPOS[@]}
+          if [ "$COUNT" -eq 0 ]; then
+            echo "REPO_LIST is empty; nothing to do."
+            exit 1
+          fi
 
-          # Fetch full upstream and origin (avoid shallow fetch to prevent missing objects)
-          git fetch upstream ${UPSTREAM_BRANCH} || git fetch --unshallow upstream ${UPSTREAM_BRANCH} || git fetch upstream ${UPSTREAM_BRANCH}
-          git fetch origin ${TARGET_BRANCH} || git fetch --unshallow origin ${TARGET_BRANCH} || git fetch origin ${TARGET_BRANCH}
+          # pick rotating index based on epoch days (changes every day)
+          DAY=$(( $(date -u +%s) / 86400 ))
+          IDX=$(( DAY % COUNT ))
+          ENTRY="${REPOS[$IDX]}"
+          echo "Selected entry: $ENTRY (index $IDX of $COUNT)"
 
-          # If upstream is already an ancestor of HEAD, nothing to do
-          if git merge-base --is-ancestor upstream/${UPSTREAM_BRANCH} HEAD 2>/dev/null; then
+          # support optional ":branch" suffix
+          if [[ "$ENTRY" == *":"* ]]; then
+            UPSTREAM_REPO="${ENTRY%%:*}"
+            UPSTREAM_BRANCH="${ENTRY##*:}"
+            echo "Using explicit branch: ${UPSTREAM_BRANCH} for ${UPSTREAM_REPO}"
+          else
+            UPSTREAM_REPO="$ENTRY"
+            # query repository to get default branch via GitHub API (requires PAT)
+            API_URL="https://api.github.com/repos/${UPSTREAM_REPO}"
+            echo "Detecting default branch for ${UPSTREAM_REPO} via GitHub API..."
+            DEFAULT_BRANCH=$(curl -s -H "Authorization: token ${PAT}" -H "Accept: application/vnd.github+json" "${API_URL}" | jq -r '.default_branch // empty')
+            if [ -z "$DEFAULT_BRANCH" ] || [ "$DEFAULT_BRANCH" = "null" ]; then
+              echo "Failed to detect default branch via API, falling back to 'main'"
+              UPSTREAM_BRANCH="main"
+            else
+              UPSTREAM_BRANCH="$DEFAULT_BRANCH"
+            fi
+            echo "Detected upstream branch: ${UPSTREAM_BRANCH}"
+          fi
+
+          # add upstream remote (fresh)
+          git remote remove upstream || true
+          git remote add upstream "https://github.com/${UPSTREAM_REPO}.git"
+
+          # fetch that branch (full fetch)
+          git fetch upstream "${UPSTREAM_BRANCH}" || { echo "fetch upstream ${UPSTREAM_BRANCH} failed"; exit 1; }
+
+          # quick exit if upstream already merged into HEAD
+          if git merge-base --is-ancestor "upstream/${UPSTREAM_BRANCH}" HEAD 2>/dev/null; then
             echo "Upstream already merged into HEAD — nothing to do."
             exit 0
           fi
 
-          # create a uniquely named branch
-          BRANCH_NAME="sync-upstream-$(date +%Y%m%d-%H%M%S)"
-          git checkout -b "$BRANCH_NAME"
-
-          # merge upstream into this branch (allow unrelated histories to be robust)
-          # allow failure to be tolerated so we can inspect diff later
-          git merge --no-edit --allow-unrelated-histories upstream/${UPSTREAM_BRANCH} || true
-
-          # if no changes compared to origin/target branch, exit
-          if git diff --quiet origin/${TARGET_BRANCH}..HEAD; then
-            echo "No effective changes vs origin/${TARGET_BRANCH} — exiting."
-            exit 0
-          fi
-
-          # perform repack and gc to produce clean pack objects before pushing
-          git repack -a -d || true
-          git gc --prune=now --aggressive || true
-
-          # push new branch with retries (handle transient network/Git issues)
-          PUSH_ATTEMPTS=0
-          until [ "$PUSH_ATTEMPTS" -ge 5 ]
-          do
-            git push --set-upstream origin "$BRANCH_NAME" && break
-            PUSH_ATTEMPTS=$((PUSH_ATTEMPTS+1))
-            echo "Push attempt $PUSH_ATTEMPTS failed, retrying in 5s..."
-            sleep 5
-          done
-          if [ "$PUSH_ATTEMPTS" -ge 5 ]; then
-            echo "Push failed after multiple attempts."
-            exit 1
-          fi
-
-          # GitHub API helpers
-          API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}"
-          OWNER=${GITHUB_REPOSITORY%%/*}
-
-          # wait until branch is visible on GitHub (avoid race)
-          for i in $(seq 1 10); do
-            if curl -s -H "Authorization: token ${PAT}" -H "Accept: application/vnd.github+json" "${API_URL}/git/ref/heads/${BRANCH_NAME}" | jq -e .ref >/dev/null 2>&1; then
-              echo "Branch ${BRANCH_NAME} visible on GitHub."
-              break
-            fi
-            echo "Waiting for branch to appear on GitHub... ($i)"
-            sleep 1
-            if [ "$i" -eq 10 ]; then
-              echo "Branch did not appear on GitHub in time."
-              exit 1
-            fi
-          done
-
-          # check existing open PR for same head/base
-          EXISTING_PR_COUNT=$(curl -s -H "Authorization: token ${PAT}" -H "Accept: application/vnd.github+json" \
-            "${API_URL}/pulls?state=open&head=${OWNER}:${BRANCH_NAME}&base=${TARGET_BRANCH}" | jq 'length')
-
-          if [ "${EXISTING_PR_COUNT}" -gt 0 ]; then
-            echo "An open PR already exists for ${BRANCH_NAME}. Skipping PR creation."
+          # preserve local workflow file content so we can restore it after merge
+          PRESERVE_DIR="$(mktemp -d)"
+          mkdir -p "$PRESERVE_DIR"
+          if git show HEAD:.github/workflows/sync-upstream.yml > "$PRESERVE_DIR/sync-upstream.yml" 2>/dev/null; then
+            echo "Preserved current workflow file."
           else
-            # create pull request
+            mkdir -p .github/workflows || true
+            if [ -f .github/workflows/sync-upstream.yml ]; then
+              cp .github/workflows/sync-upstream.yml "$PRESERVE_DIR/sync-upstream.yml"
+            else
+              printf '%s\n' "# preserved placeholder" > "$PRESERVE_DIR/sync-upstream.yml"
+            fi
+          fi
+
+          # Attempt a merge without committing to detect conflicts
+          if git merge --no-commit --no-ff --allow-unrelated-histories "upstream/${UPSTREAM_BRANCH}"; then
+            git commit -m "chore: sync upstream ${UPSTREAM_REPO}@${UPSTREAM_BRANCH} into ${TARGET_BRANCH}"
+
+            # restore our workflow file to ensure this workflow stays intact
+            cp "$PRESERVE_DIR/sync-upstream.yml" .github/workflows/sync-upstream.yml || true
+            if ! git diff --quiet -- .github/workflows/sync-upstream.yml; then
+              git add .github/workflows/sync-upstream.yml
+              git commit -m "chore: preserve local workflow file after merging ${UPSTREAM_REPO}" || true
+            fi
+
+            # cleanup git objects
+            git repack -a -d || true
+            git gc --prune=now --aggressive || true
+
+            # push directly to target branch (main). retry a few times on transient errors.
+            PUSH_ATTEMPTS=0
+            until [ "$PUSH_ATTEMPTS" -ge 5 ]; do
+              git push origin "HEAD:${TARGET_BRANCH}" && break
+              PUSH_ATTEMPTS=$((PUSH_ATTEMPTS+1))
+              echo "Push attempt $PUSH_ATTEMPTS failed, retrying in 5s..."
+              sleep 5
+            done
+            if [ "$PUSH_ATTEMPTS" -ge 5 ]; then
+              echo "Direct push failed after multiple attempts; creating a PR branch as fallback."
+              BRANCH_NAME="sync-upstream-$(date +%Y%m%d-%H%M%S)"
+              git checkout -b "$BRANCH_NAME"
+              git push --set-upstream origin "$BRANCH_NAME"
+              API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}"
+              OWNER=${GITHUB_REPOSITORY%%/*}
+              CREATE_PR_RESP=$(curl -s -X POST \
+                -H "Authorization: token ${PAT}" \
+                -H "Accept: application/vnd.github+json" \
+                "${API_URL}/pulls" \
+                -d "{\"title\":\"chore: sync upstream ${UPSTREAM_REPO}\",\"head\":\"${OWNER}:${BRANCH_NAME}\",\"base\":\"${TARGET_BRANCH}\",\"body\":\"Auto sync from upstream ${UPSTREAM_REPO} — push failed, please review and merge.\"}")
+              echo "Created PR fallback: $CREATE_PR_RESP"
+              exit 0
+            fi
+
+            echo "Merged upstream ${UPSTREAM_REPO}@${UPSTREAM_BRANCH} and pushed to ${TARGET_BRANCH}."
+            exit 0
+
+          else
+            # merge had conflicts. abort and create a conflict branch + PR
+            echo "Merge produced conflicts. Aborting merge and opening PR for manual resolution."
+            git merge --abort || true
+
+            BRANCH_NAME="sync-upstream-$(date +%Y%m%d-%H%M%S)"
+            git checkout -b "$BRANCH_NAME"
+
+            # attempt a merge on the new branch to carry conflict markers for review
+            git merge --no-edit --allow-unrelated-histories "upstream/${UPSTREAM_BRANCH}" || true
+
+            # restore preserved workflow to avoid replacing it with upstream's
+            cp "$PRESERVE_DIR/sync-upstream.yml" .github/workflows/sync-upstream.yml || true
+            git add .github/workflows/sync-upstream.yml || true
+            git commit -m "chore: preserve workflow file (conflict branch for ${UPSTREAM_REPO})" || true
+
+            # repack/gc
+            git repack -a -d || true
+            git gc --prune=now --aggressive || true
+
+            # push conflict branch
+            git push --set-upstream origin "$BRANCH_NAME"
+
+            # create PR for manual conflict resolution
+            API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}"
+            OWNER=${GITHUB_REPOSITORY%%/*}
             CREATE_PR_RESP=$(curl -s -X POST \
               -H "Authorization: token ${PAT}" \
               -H "Accept: application/vnd.github+json" \
               "${API_URL}/pulls" \
-              -d "{\"title\":\"chore: sync upstream ${BRANCH_NAME}\",\"head\":\"${OWNER}:${BRANCH_NAME}\",\"base\":\"${TARGET_BRANCH}\",\"body\":\"Auto sync from upstream\"}")
+              -d "{\"title\":\"chore: sync upstream ${UPSTREAM_REPO} (conflicts)\",\"head\":\"${OWNER}:${BRANCH_NAME}\",\"base\":\"${TARGET_BRANCH}\",\"body\":\"Automatic sync from ${UPSTREAM_REPO}@${UPSTREAM_BRANCH} resulted in conflicts. Please resolve the conflicts in branch ${BRANCH_NAME}.\"}")
 
-            PR_NUMBER=$(echo "$CREATE_PR_RESP" | jq -r '.number // empty' || true)
-            if [ -z "$PR_NUMBER" ]; then
-              echo "create pr failed: $CREATE_PR_RESP"
-              exit 1
-            fi
-
-            # attempt to merge PR automatically (merge_method can be 'merge', 'squash', or 'rebase')
-            MERGE_RESP=$(curl -s -X PUT \
-              -H "Authorization: token ${PAT}" \
-              -H "Accept: application/vnd.github+json" \
-              "${API_URL}/pulls/${PR_NUMBER}/merge" \
-              -d '{"merge_method":"merge"}')
-
-            MERGED=$(echo "$MERGE_RESP" | jq -r '.merged // false' || true)
-            if [ "$MERGED" = "true" ]; then
-              # delete branch if merged
-              curl -s -X DELETE -H "Authorization: token ${PAT}" -H "Accept: application/vnd.github+json" "${API_URL}/git/refs/heads/${BRANCH_NAME}" || true
-              echo "PR merged and branch cleaned up."
-            else
-              echo "PR created but not merged automatically: $MERGE_RESP"
-            fi
+            echo "Created PR for conflict resolution: $CREATE_PR_RESP"
+            exit 0
           fi
-
-          # cleanup old sync-upstream-* branches that have no open PRs
-          for ref in $(git ls-remote --heads origin "sync-upstream-*" | awk '{print $2}' | sed 's#refs/heads/##'); do
-            OPEN_PR_COUNT=$(curl -s -H "Authorization: token ${PAT}" -H "Accept: application/vnd.github+json" "${API_URL}/pulls?state=open&head=${OWNER}:${ref}" | jq 'length')
-            if [ "$OPEN_PR_COUNT" -eq 0 ]; then
-              echo "Deleting stale branch: $ref"
-              curl -s -X DELETE -H "Authorization: token ${PAT}" -H "Accept: application/vnd.github+json" "${API_URL}/git/refs/heads/${ref}" || true
-            fi
-          done
