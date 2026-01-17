@@ -1,0 +1,131 @@
+name: Sync Upstream
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: sync-upstream-${{ github.repository }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  UPSTREAM_REPO: igcyukira/i0c.cc
+  UPSTREAM_BRANCH: main
+  TARGET_BRANCH: main
+  PAT: ${{ secrets.PAT }}
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ env.TARGET_BRANCH }}
+          fetch-depth: 0
+          token: ${{ secrets.PAT }}
+
+      - name: Ensure git user
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Sync from upstream and create/merge PR if needed
+        env:
+          PAT: ${{ secrets.PAT }}
+        run: |
+          set -euxo pipefail
+
+          # fetch both upstream and origin minimal history (full history already fetched by checkout)
+          git remote add upstream "https://github.com/${{ env.UPSTREAM_REPO }}.git" || true
+          git fetch upstream ${{ env.UPSTREAM_BRANCH }} --depth=1 || git fetch upstream ${{ env.UPSTREAM_BRANCH }}
+          git fetch origin ${{ env.TARGET_BRANCH }} --depth=1 || git fetch origin ${{ env.TARGET_BRANCH }}
+
+          # if upstream is already an ancestor of HEAD, nothing to do
+          if git merge-base --is-ancestor upstream/${{ env.UPSTREAM_BRANCH }} HEAD 2>/dev/null; then
+            echo "Upstream already merged into HEAD — nothing to do."
+            exit 0
+          fi
+
+          BRANCH_NAME="sync-upstream-$(date +%Y%m%d-%H%M%S)"
+          git checkout -b "$BRANCH_NAME"
+
+          # merge upstream into this branch (allow unrelated histories to be robust)
+          git merge --no-edit --allow-unrelated-histories upstream/${{ env.UPSTREAM_BRANCH }} || true
+
+          # if no changes compared to origin/target branch, exit
+          if git diff --quiet origin/${{ env.TARGET_BRANCH }}..HEAD; then
+            echo "No effective changes vs origin/${{ env.TARGET_BRANCH }} — exiting."
+            exit 0
+          fi
+
+          # push new branch
+          git push --set-upstream origin "$BRANCH_NAME"
+
+          API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}"
+          OWNER=${GITHUB_REPOSITORY%%/*}
+
+          # wait until branch is visible on GitHub (avoid race)
+          for i in $(seq 1 10); do
+            if curl -s -H "Authorization: token ${PAT}" -H "Accept: application/vnd.github+json" "${API_URL}/git/ref/heads/${BRANCH_NAME}" | jq -e .ref >/dev/null 2>&1; then
+              echo "Branch ${BRANCH_NAME} visible on GitHub."
+              break
+            fi
+            echo "Waiting for branch to appear on GitHub... ($i)"
+            sleep 1
+            if [ "$i" -eq 10 ]; then
+              echo "Branch did not appear on GitHub in time."
+              exit 1
+            fi
+          done
+
+          # check existing open PR for same head/base
+          EXISTING_PR_COUNT=$(curl -s -H "Authorization: token ${PAT}" -H "Accept: application/vnd.github+json" \
+            "${API_URL}/pulls?state=open&head=${OWNER}:${BRANCH_NAME}&base=${{ env.TARGET_BRANCH }}" | jq 'length')
+
+          if [ "$EXISTING_PR_COUNT" -gt 0 ]; then
+            echo "An open PR already exists for ${BRANCH_NAME}. Skipping PR creation."
+          else
+            # create pull request (explicitly set head as owner:branch)
+            CREATE_PR_RESP=$(curl -s -X POST \
+              -H "Authorization: token ${PAT}" \
+              -H "Accept: application/vnd.github+json" \
+              "${API_URL}/pulls" \
+              -d "{\"title\":\"chore: sync upstream ${BRANCH_NAME}\",\"head\":\"${OWNER}:${BRANCH_NAME}\",\"base\":\"${{ env.TARGET_BRANCH }}\",\"body\":\"Auto sync from upstream\"}")
+
+            PR_NUMBER=$(echo "$CREATE_PR_RESP" | jq -r '.number // empty' || true)
+            if [ -z "$PR_NUMBER" ]; then
+              echo "create pr failed: $CREATE_PR_RESP"
+              exit 1
+            fi
+
+            # attempt to merge PR automatically
+            MERGE_RESP=$(curl -s -X PUT \
+              -H "Authorization: token ${PAT}" \
+              -H "Accept: application/vnd.github+json" \
+              "${API_URL}/pulls/${PR_NUMBER}/merge" \
+              -d '{"merge_method":"merge"}')
+
+            MERGED=$(echo "$MERGE_RESP" | jq -r '.merged // false' || true)
+            if [ "$MERGED" = "true" ]; then
+              # delete branch if merged
+              curl -s -X DELETE -H "Authorization: token ${PAT}" -H "Accept: application/vnd.github+json" "${API_URL}/git/refs/heads/${BRANCH_NAME}" || true
+              echo "PR merged and branch cleaned up."
+            else
+              echo "PR created but not merged automatically: $MERGE_RESP"
+            fi
+          fi
+
+          # cleanup old sync-upstream-* branches that have no open PRs
+          for ref in $(git ls-remote --heads origin "sync-upstream-*" | awk '{print $2}' | sed 's#refs/heads/##'); do
+            OPEN_PR_COUNT=$(curl -s -H "Authorization: token ${PAT}" -H "Accept: application/vnd.github+json" "${API_URL}/pulls?state=open&head=${OWNER}:${ref}" | jq 'length')
+            if [ "$OPEN_PR_COUNT" -eq 0 ]; then
+              echo "Deleting stale branch: $ref"
+              curl -s -X DELETE -H "Authorization: token ${PAT}" -H "Accept: application/vnd.github+json" "${API_URL}/git/refs/heads/${ref}" || true
+            fi
+          done
