@@ -1,0 +1,420 @@
+<template>
+  <v-card elevation="1" class="chart-card">
+    <v-card-text>
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">{{ t('charts.messageTrend.title') }}</div>
+          <div class="chart-subtitle">{{ t('charts.messageTrend.subtitle') }}</div>
+        </div>
+        
+        <v-select 
+          color="primary" 
+          variant="outlined"
+          density="compact"
+          hide-details 
+          v-model="selectedTimeRange" 
+          :items="timeRanges" 
+          item-title="label" 
+          item-value="value" 
+          class="time-select"
+          @update:model-value="fetchMessageSeries"
+          return-object 
+          single-line
+        >
+          <template v-slot:selection="{ item }">
+            <div class="d-flex align-center">
+              <v-icon start size="small">mdi-calendar-range</v-icon>
+              {{ item.raw.label }}
+            </div>
+          </template>
+        </v-select>
+      </div>
+      
+      <div class="chart-stats">
+        <div class="stat-box">
+          <div class="stat-label">{{ t('charts.messageTrend.totalMessages') }}</div>
+          <div class="stat-number">{{ totalMessages }}</div>
+        </div>
+        
+        <div class="stat-box">
+          <div class="stat-label">{{ t('charts.messageTrend.dailyAverage') }}</div>
+          <div class="stat-number">{{ dailyAverage }}</div>
+        </div>
+        
+        <div class="stat-box" :class="{'trend-up': growthRate > 0, 'trend-down': growthRate < 0}">
+          <div class="stat-label">{{ t('charts.messageTrend.growthRate') }}</div>
+          <div class="stat-number">
+            <v-icon v-show="growthRate !== 0" size="small" :icon="growthRate > 0 ? 'mdi-arrow-up' : 'mdi-arrow-down'"></v-icon>
+            {{ Math.abs(growthRate) }}%
+          </div>
+        </div>
+      </div>
+      
+      <div class="chart-container">
+        <div v-if="loading" class="loading-overlay">
+          <v-progress-circular indeterminate color="primary"></v-progress-circular>
+          <div class="loading-text">{{ t('status.loading') }}</div>
+        </div>
+        <apexchart 
+          v-if="chartOptions"
+          type="area" 
+          :height="chartOptions.chart && chartOptions.chart.height ? chartOptions.chart.height : 280"
+          :options="chartOptions" 
+          :series="chartSeries" 
+        ></apexchart>
+      </div>
+    </v-card-text>
+  </v-card>
+</template>
+
+<script lang="ts">
+import axios from 'axios';
+import { defineComponent, type PropType } from 'vue';
+import { useTheme } from 'vuetify'; 
+import { useModuleI18n } from '@/i18n/composables';
+
+type TimeRange = {
+  label: string;
+  value: number;
+};
+
+type MessageTimeSeriesItem = [number, number];
+
+type ChartPoint = [number, number];
+
+type ChartSeries = {
+  name: string;
+  data: ChartPoint[];
+};
+
+type StatApiResponse = {
+  data: {
+    message_time_series?: MessageTimeSeriesItem[];
+  };
+};
+
+export default defineComponent({
+  name: 'MessageStat',
+  props: {
+    stat: {
+      type: Object as PropType<unknown>,
+      default: null,
+    },
+  },
+
+  setup() {
+    const { tm: t } = useModuleI18n('features/dashboard');
+    const theme = useTheme(); 
+    return { t, theme };
+  },
+
+  data() {
+    return {
+      totalMessages: '0',
+      dailyAverage: '0',
+      growthRate: 0,
+      loading: false,
+      selectedTimeRange: null as TimeRange | null,
+      timeRanges: [] as TimeRange[],
+      chartSeries: [
+        {
+          name: '',
+          data: [] as ChartPoint[],
+        },
+      ] as ChartSeries[],
+      messageTimeSeries: [] as MessageTimeSeriesItem[],
+    };
+  },
+  
+  computed: {
+    chartOptions() {
+      const currentTheme = this.theme.current.value;
+      const themeColors: any = currentTheme.colors || {};
+      const isDark = currentTheme.dark;
+      
+      return {
+        chart: {
+          type: 'area',
+          height: 280,
+          fontFamily: `inherit`,
+          foreColor: isDark ? '#adb5bd' : '#616161',
+          toolbar: {
+            show: true,
+            tools: {
+              download: true,
+              selection: false,
+              zoom: true,
+              zoomin: true,
+              zoomout: true,
+              pan: true,
+            },
+          },
+          animations: {
+            enabled: true,
+            easing: 'easeinout',
+            speed: 800,
+          },
+        },
+        colors: [themeColors.primary || '#5e35b1'], 
+        fill: {
+          type: 'solid',
+          opacity: 0.3,
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'smooth',
+          width: 2
+        },
+        markers: {
+          size: 3,
+          strokeWidth: 2,
+          hover: {
+            size: 5,
+          }
+        },
+        tooltip: {
+          theme: isDark ? 'dark' : 'light',
+          x: {
+            format: 'yyyy-MM-dd HH:mm'
+          },
+          y: {
+            title: {
+              formatter: () => this.t('charts.messageTrend.messageCount') + ' '
+            }
+          },
+        },
+        xaxis: {
+          type: 'datetime',
+          title: {
+            text: this.t('charts.messageTrend.timeLabel')
+          },
+          labels: {
+            formatter: (value: string | number) => {
+              return new Date(value).toLocaleString('zh-CN', {
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+              });
+            }
+          },
+          tooltip: {
+            enabled: false
+          }
+        },
+        yaxis: {
+          title: {
+            text: this.t('charts.messageTrend.messageCount')
+          },
+          min: (min: number) => {
+            return min < 10 ? 0 : Math.floor(min * 0.8);
+          },
+        },
+        grid: {
+          borderColor: themeColors.border || '#eeeeee', 
+          row: {
+            colors: ['transparent', 'transparent'],
+            opacity: 0.2
+          },
+          column: {
+            colors: ['transparent', 'transparent'],
+          },
+          padding: {
+            left: 0,
+            right: 0
+          }
+        }
+      };
+    }
+  },
+  mounted() {
+    this.timeRanges = [
+      { label: this.t('charts.messageTrend.timeRanges.1day'), value: 86400 },
+      { label: this.t('charts.messageTrend.timeRanges.3days'), value: 259200 },
+      { label: this.t('charts.messageTrend.timeRanges.1week'), value: 604800 },
+      { label: this.t('charts.messageTrend.timeRanges.1month'), value: 2592000 },
+    ];
+    this.selectedTimeRange = this.timeRanges[0];
+
+    if (this.chartSeries[0]) {
+      this.chartSeries[0].name = this.t('charts.messageTrend.messageCount');
+    }
+    
+    this.fetchMessageSeries();
+  },
+
+  methods: {
+    formatNumber(num: number) {
+      return new Intl.NumberFormat('zh-CN').format(num);
+    },
+    
+    async fetchMessageSeries() {
+      if (!this.selectedTimeRange) {
+        return;
+      }
+      this.loading = true;
+      try {
+        const response = await axios.get<StatApiResponse>(`/api/stat/get?offset_sec=${this.selectedTimeRange.value}`);
+        const data = response.data.data;
+        
+        if (data && data.message_time_series) {
+          this.messageTimeSeries = data.message_time_series;
+          this.processTimeSeriesData();
+        }
+      } catch (error) {
+        console.error(this.t('status.dataError'), error);
+      } finally {
+        this.loading = false;
+      }
+    },
+    
+    processTimeSeriesData() {
+      this.chartSeries = [{
+        name: this.t('charts.messageTrend.messageCount'), 
+        data: this.messageTimeSeries.map((item: MessageTimeSeriesItem): ChartPoint => {
+          return [new Date(item[0]*1000).getTime(), item[1]];
+        })
+      }];
+  
+      let total = 0;
+      this.messageTimeSeries.forEach((item: MessageTimeSeriesItem) => {
+        total += item[1];
+      });
+      this.totalMessages = this.formatNumber(total);
+
+      if (this.messageTimeSeries.length > 0 && this.selectedTimeRange) {
+        const daysSpan = this.selectedTimeRange.value / 86400; 
+        this.dailyAverage = this.formatNumber(Math.round(total / daysSpan));
+      }
+ 
+      this.calculateGrowthRate();
+    },
+    
+    calculateGrowthRate() {
+      if (this.messageTimeSeries.length < 4) {
+        this.growthRate = 0;
+        return;
+      }
+
+      const halfIndex = Math.floor(this.messageTimeSeries.length / 2);
+      
+      const firstHalf = this.messageTimeSeries
+        .slice(0, halfIndex)
+        .reduce((sum: number, item: MessageTimeSeriesItem) => sum + item[1], 0);
+        
+      const secondHalf = this.messageTimeSeries
+        .slice(halfIndex)
+        .reduce((sum: number, item: MessageTimeSeriesItem) => sum + item[1], 0);
+
+      if (firstHalf > 0) {
+        this.growthRate = Math.round(((secondHalf - firstHalf) / firstHalf) * 100);
+      } else {
+        this.growthRate = secondHalf > 0 ? 100 : 0;
+      }
+    }
+  }
+});
+</script>
+
+<style scoped>
+.chart-card {
+  height: 100%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+  transition: transform 0.2s;
+}
+
+.chart-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+.chart-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.chart-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--v-theme-primaryText);
+}
+
+.chart-subtitle {
+  font-size: 12px;
+  color: var(--v-theme-secondaryText);
+  margin-top: 4px;
+}
+
+.time-select {
+  max-width: fit-content;
+  font-size: 14px;
+}
+
+.chart-stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.stat-box {
+  padding: 12px 16px;
+  background: var(--v-theme-surface);
+  border-radius: 8px;
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--v-theme-secondaryText);
+  margin-bottom: 4px;
+}
+
+.stat-number {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--v-theme-primaryText);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.trend-up .stat-number {
+  color: var(--v-theme-success);
+}
+
+.trend-down .stat-number {
+  color: var(--v-theme-error);
+}
+
+.chart-container {
+  border-top: 1px solid var(--v-theme-border);
+  padding-top: 20px;
+  position: relative;
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--v-theme-overlay);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.loading-text {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--v-theme-secondaryText);
+}
+</style>

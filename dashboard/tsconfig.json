@@ -1,0 +1,42 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "src/types/**/*.d.ts"],
+  "compilerOptions": {
+    // === 基础环境 ===
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
+    // === 严格模式 ===
+    "strict": true,
+    "noImplicitAny": true, // 这一行其实包含在 strict 里了，但写出来提醒自己
+    
+    // === 宽容度设置 ===
+    "allowJs": true,           
+    "skipLibCheck": true,      
+    "useUnknownInCatchVariables": false, 
+
+    // === 模块解析 ===
+    "module": "ESNext",
+    "moduleResolution": "bundler", 
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+
+    // === 构建性能 ===
+    "noEmit": true,
+    "incremental": true,       
+
+    // === Vue 特有 ===
+    "jsx": "preserve",
+    "ignoreDeprecations": "5.0"
+  },
+  "references": [
+    {
+      "path": "./tsconfig.vite-config.json"
+    }
+  ]
+}
