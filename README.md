@@ -1,85 +1,21 @@
-# three.js
+# D3: Data-Driven Documents
 
-[![NPM Package][npm]][npm-url]
-[![Build Size][build-size]][build-size-url]
-[![NPM Downloads][npm-downloads]][npmtrends-url]
-[![jsDelivr Downloads][jsdelivr-downloads]][jsdelivr-url]
-[![Discord][discord]][discord-url]
+<a href="https://d3js.org"><img src="./docs/public/logo.svg" width="256" height="256"></a>
 
-#### JavaScript 3D library
+**D3** (or **D3.js**) is a free, open-source JavaScript library for visualizing data. Its low-level approach built on web standards offers unparalleled flexibility in authoring dynamic, data-driven graphics. For more than a decade D3 has powered groundbreaking and award-winning visualizations, become a foundational building block of higher-level chart libraries, and fostered a vibrant community of data practitioners around the world.
 
-The aim of the project is to create an easy-to-use, lightweight, cross-browser, general-purpose 3D library. The current builds only include WebGL and WebGPU renderers but SVG and CSS3D renderers are also available as addons.
+<a href="https://observablehq.observablehq.cloud/oss-analytics/@d3/d3">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://observablehq.observablehq.cloud/oss-analytics/d3/downloads-dark.svg">
+    <img alt="Daily downloads of Observable Framework" src="https://observablehq.observablehq.cloud/oss-analytics/d3/downloads.svg">
+  </picture>
+</a>
 
-[Examples](https://threejs.org/examples/) &mdash;
-[Docs](https://threejs.org/docs/) &mdash;
-[Manual](https://threejs.org/manual/) &mdash;
-[Wiki](https://github.com/mrdoob/three.js/wiki) &mdash;
-[Migrating](https://github.com/mrdoob/three.js/wiki/Migration-Guide) &mdash;
-[Questions](https://stackoverflow.com/questions/tagged/three.js) &mdash;
-[Forum](https://discourse.threejs.org/) &mdash;
-[Discord](https://discord.gg/56GBJwAnUS)
+<sub>Daily downloads of D3 · [oss-analytics](https://observablehq.observablehq.cloud/oss-analytics/)</sub>
 
-### Usage
+## Resources
 
-This code creates a scene, a camera, and a geometric cube, and it adds the cube to the scene. It then creates a `WebGL` renderer for the scene and camera, and it adds that viewport to the `document.body` element. Finally, it animates the cube within the scene for the camera.
-
-```javascript
-import * as THREE from 'three';
-
-const width = window.innerWidth, height = window.innerHeight;
-
-// init
-
-const camera = new THREE.PerspectiveCamera( 70, width / height, 0.01, 10 );
-camera.position.z = 1;
-
-const scene = new THREE.Scene();
-
-const geometry = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
-const material = new THREE.MeshNormalMaterial();
-
-const mesh = new THREE.Mesh( geometry, material );
-scene.add( mesh );
-
-const renderer = new THREE.WebGLRenderer( { antialias: true } );
-renderer.setSize( width, height );
-renderer.setAnimationLoop( animate );
-document.body.appendChild( renderer.domElement );
-
-// animation
-
-function animate( time ) {
-
-	mesh.rotation.x = time / 2000;
-	mesh.rotation.y = time / 1000;
-
-	renderer.render( scene, camera );
-
-}
-```
-
-If everything goes well, you should see [this](https://jsfiddle.net/w43x5Lgh/).
-
-### Cloning this repository
-
-Cloning the repo with all its history results in a ~2 GB download. If you don't need the whole history you can use the `depth` parameter to significantly reduce download size.
-
-```sh
-git clone --depth=1 https://github.com/mrdoob/three.js.git
-```
-
-### Change log
-
-[Releases](https://github.com/mrdoob/three.js/releases)
-
-
-[npm]: https://img.shields.io/npm/v/three
-[npm-url]: https://www.npmjs.com/package/three
-[build-size]: https://badgen.net/bundlephobia/minzip/three
-[build-size-url]: https://bundlephobia.com/result?p=three
-[npm-downloads]: https://img.shields.io/npm/dw/three
-[npmtrends-url]: https://www.npmtrends.com/three
-[jsdelivr-downloads]: https://data.jsdelivr.com/v1/package/npm/three/badge?style=rounded
-[jsdelivr-url]: https://www.jsdelivr.com/package/npm/three
-[discord]: https://img.shields.io/discord/685241246557667386
-[discord-url]: https://discord.gg/56GBJwAnUS
+* [Documentation](https://d3js.org)
+* [Examples](https://observablehq.com/@d3/gallery)
+* [Releases](https://github.com/d3/d3/releases)
+* [Getting help](https://d3js.org/community)
