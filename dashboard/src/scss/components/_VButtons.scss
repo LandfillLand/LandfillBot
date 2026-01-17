@@ -1,0 +1,160 @@
+//
+// Light Buttons
+//
+
+.v-btn {
+  &.bg-lightsecondary {
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: rgb(var(--v-theme-secondary)) !important;
+      color: $white !important;
+    }
+  }
+}
+
+.v-btn {
+  text-transform: capitalize;
+  letter-spacing: $btn-letter-spacing;
+}
+.v-btn--icon.v-btn--density-default {
+  width: calc(var(--v-btn-height) + 6px);
+  height: calc(var(--v-btn-height) + 6px);
+}
+
+// 移动端按钮适配
+@media (max-width: 600px) {
+  .v-btn {
+    min-width: 40px;
+    min-height: 36px;
+    font-size: 15px;
+    padding: 0 10px !important;
+    border-radius: 8px !important;
+  }
+  .v-btn--icon.v-btn--density-default {
+    width: calc(var(--v-btn-height) + 2px);
+    height: calc(var(--v-btn-height) + 2px);
+    min-width: 36px;
+    min-height: 36px;
+    font-size: 18px;
+  }
+  .config-floating-btn {
+    right: 16px;
+    bottom: 16px;
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+    min-height: 48px;
+    border-radius: 50% !important;
+    box-shadow: 0 3px 8px rgba(25, 47, 126, 0.25);
+    padding: 0 !important;
+  }
+  .config-floating-btn--editor {
+    bottom: 76px;
+  }
+  .config-floating-btn--test {
+    bottom: 132px;
+  }
+}
+
+// Config floating action buttons
+.config-floating-btn {
+  position: fixed;
+  right: 52px;
+  bottom: 52px;
+  width: 64px;
+  min-width: 64px;
+  height: 64px;
+  min-height: 64px;
+  border-radius: 50% !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(var(--v-theme-primary), 0.72) 0%,
+    rgba(var(--v-theme-primary), 1) 100%
+  ) !important;
+  background-color: rgb(var(--v-theme-primary)) !important;
+  box-shadow: 0 5px 1px rgba(25, 47, 126, 0.651);
+  color: $white !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+  z-index: 1000;
+
+  .v-btn__overlay,
+  .v-btn__underlay {
+    opacity: 0 !important;
+  }
+
+  .v-btn__content,
+  .v-icon {
+    color: $white !important;
+  }
+
+  &:hover,
+  &:focus-visible {
+    box-shadow: 0 5px 3px rgba(25, 47, 126, 0.651);
+  }
+}
+
+.v-theme--PurpleThemeDark {
+  .config-floating-btn {
+    box-shadow: 0 5px 1px rgba(154, 181, 228, 0.614);
+
+    &:hover,
+    &:focus-visible {
+      box-shadow: 0 5px 3px rgb(141, 173, 219);
+    }
+  }
+}
+
+.config-floating-btn--editor {
+  bottom: 124px;
+}
+
+.config-floating-btn--test {
+  bottom: 196px;
+}
+
+// Ensure themed buttons use accessible foreground colors in light/dark modes
+.v-theme--PurpleTheme {
+  .v-btn {
+    &.bg-primary,
+    &.bg-secondary,
+    &.bg-success,
+    &.bg-info,
+    &.bg-warning,
+    &.bg-error,
+    &.bg-accent {
+      color: $white !important;
+      box-shadow: none !important;
+
+      .v-btn__content,
+      .v-icon {
+        color: $white !important;
+      }
+    }
+  }
+}
+
+.v-theme--DarkTheme {
+  .v-btn {
+    &.bg-primary,
+    &.bg-secondary,
+    &.bg-success,
+    &.bg-info,
+    &.bg-warning,
+    &.bg-error,
+    &.bg-accent {
+      color: #000 !important;
+      box-shadow: none !important;
+
+      .v-btn__content,
+      .v-icon {
+        color: #000 !important;
+      }
+    }
+  }
+}

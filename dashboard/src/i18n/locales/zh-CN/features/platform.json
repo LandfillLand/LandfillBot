@@ -1,0 +1,80 @@
+{
+  "title": "机器人",
+  "subtitle": "管理平台适配器实例，连接到不同的消息平台",
+  "adapters": "平台适配器",
+  "addAdapter": "创建机器人",
+  "emptyText": "暂无平台适配器，点击 创建机器人 添加",
+  "viewWebhook": "查看 Webhook 链接",
+  "webhookCopied": "Webhook URL 已复制到剪贴板",
+  "webhookCopyFailed": "复制失败，请手动复制",
+  "webhookDialog": {
+    "title": "Webhook 回调地址",
+    "description": "回调地址如下，请确保网络环境可以公网访问。也可以在日志中查看回调地址信息。建议填写 配置文件 -> 系统 中的「对外可达的回调接口地址」配置项。",
+    "close": "关闭"
+  },
+  "details": {
+    "adapterType": "适配器类型",
+    "token": "Token",
+    "description": "描述"
+  },
+  "logs": {
+    "title": "平台日志",
+    "expand": "展开",
+    "collapse": "收起"
+  },
+  "dialog": {
+    "add": "新增",
+    "edit": "编辑",
+    "adapter": "机器人",
+    "refresh": "刷新",
+    "cancel": "取消",
+    "save": "保存",
+    "addPlatform": "创建机器人",
+    "connectTitle": "接入 {name}",
+    "viewTutorial": "查看接入教程",
+    "noTemplates": "暂无平台模板",
+    "idConflict": {
+      "title": "ID 冲突警告",
+      "message": "检测到 ID \"{id}\" 重复。请使用一个新的 ID。",
+      "confirm": "好的"
+    },
+    "securityWarning": {
+      "title": "安全提醒",
+      "aiocqhttpTokenMissing": "为了增强连接安全性，强烈建议您设置 ws_reverse_token。未设置 Token 可能导致安全风险。",
+      "learnMore": "了解更多"
+    },
+    "invalidPlatformId": "平台 ID 不能包含 ':' 或 '!'。"
+  },
+  "messages": {
+    "updateSuccess": "更新成功!",
+    "addSuccess": "添加成功!",
+    "deleteSuccess": "删除成功!",
+    "statusUpdateSuccess": "状态更新成功!",
+    "deleteConfirm": "确定要删除平台适配器"
+  },
+  "status": {
+    "enabled": "已启用",
+    "disabled": "已禁用",
+    "connecting": "连接中",
+    "connected": "已连接",
+    "disconnected": "已断开",
+    "error": "错误"
+  },
+  "runtimeStatus": {
+    "running": "运行中",
+    "error": "发生错误",
+    "pending": "等待启动",
+    "stopped": "已停止",
+    "unknown": "未知",
+    "errors": "个错误"
+  },
+  "errorDialog": {
+    "title": "错误详情",
+    "platformId": "平台 ID",
+    "errorCount": "错误数量",
+    "lastError": "最近错误",
+    "occurredAt": "发生时间",
+    "traceback": "错误堆栈",
+    "close": "关闭"
+  }
+} 

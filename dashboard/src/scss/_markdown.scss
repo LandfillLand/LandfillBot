@@ -1,0 +1,88 @@
+/*
+  GitHub-flavored Markdown base styles + theme-variable mapping.
+  Keep overrides minimal and rely on Vuetify theme CSS variables.
+*/
+
+.markdown-body {
+	--color-fg-default: rgb(var(--v-theme-secondaryText));
+	--color-fg-muted: rgba(var(--v-theme-on-surface), 0.7);
+	--color-fg-subtle: rgba(var(--v-theme-on-surface), 0.55);
+
+	--color-canvas-default: rgb(var(--v-theme-background));
+	--color-canvas-subtle: rgb(var(--v-theme-surface));
+	--color-canvas-inset: rgb(var(--v-theme-containerBg));
+
+	--color-border-default: rgba(var(--v-theme-borderLight), 0.36);
+	--color-border-muted: rgba(var(--v-theme-borderLight), 0.22);
+
+	--color-neutral-muted: rgba(var(--v-theme-on-surface), 0.06);
+	--color-neutral-subtle: rgba(var(--v-theme-on-surface), 0.04);
+
+	--color-accent-fg: rgb(var(--v-theme-primary));
+	--color-accent-emphasis: rgb(var(--v-theme-primary));
+
+	--color-danger-fg: rgb(var(--v-theme-error));
+	--color-danger-emphasis: rgb(var(--v-theme-error));
+
+	color: var(--color-fg-default);
+	background-color: transparent;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: 1.6;
+}
+
+.v-theme--PurpleTheme .markdown-body {
+	color-scheme: light;
+}
+
+.v-theme--PurpleThemeDark .markdown-body {
+	color-scheme: dark;
+}
+
+.markdown-body img.md-counter {
+	display: inline-block;
+	vertical-align: middle;
+	max-height: 32px;
+	margin: 0 6px 0 0;
+	background-color: transparent;
+}
+
+.markdown-body a.md-badge-link {
+	text-decoration: none;
+}
+
+.markdown-body a.md-badge-link:hover,
+.markdown-body a.md-badge-link:focus,
+.markdown-body a.md-badge-link:active {
+	text-decoration: none;
+	background: transparent;
+}
+
+.markdown-body figure.text-center.my-8 {
+	margin: 6px 0;
+}
+
+.markdown-body img {
+	max-width: 100%;
+	height: auto;
+}
+
+/* Code blocks (Shiki) */
+.markdown-body pre {
+	position: relative;
+}
+
+.markdown-body pre.shiki {
+	background-color: rgb(var(--v-theme-surface)) !important;
+	border: 1px solid var(--color-border-muted);
+	border-radius: 10px;
+}
+
+.v-theme--PurpleTheme pre.shiki,
+.v-theme--PurpleThemeDark pre.shiki {
+	background-color: rgb(var(--v-theme-surface)) !important;
+}
+
+.markdown-body pre.shiki code {
+	background-color: transparent !important;
+}
