@@ -75,8 +75,13 @@ jobs:
           fi
 
           # 2. 随机抽选
-          DAY=$(( $(date -u +%s) / 86400 ))
-          INDEX=$(( DAY % SIZE ))
+          # 原来的写法是按天变，现在改成按心情变 ($RANDOM)
+          INDEX=$(( $RANDOM % SIZE ))
+          
+          # 之前的这两行注释掉：
+          # DAY=$(( $(date -u +%s) / 86400 ))
+          # INDEX=$(( DAY % SIZE ))
+          
           RAW_ENTRY="${REPOS[$INDEX]}"
           ENTRY=$(echo "${RAW_ENTRY%%#*}" | xargs)
           
