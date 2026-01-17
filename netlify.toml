@@ -1,0 +1,11 @@
+[build]
+command = "npm run build:nf"
+publish = "dist"
+edge_functions = "dist/netlify/edge-functions"
+
+[[edge_functions]]
+function = "redirects"
+path = "/*"
+[[edge_functions]]
+function = "redirects"
+path = "/*"
