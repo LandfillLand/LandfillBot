@@ -11,6 +11,7 @@ permissions:
 env:
   # 📝 这里放大名单
   REPO_LIST: |
+    neo-life/nebula
     igcyukira/i0c.cc
     astrbotdevs/astrbot:master
     microsoft/vscode
