@@ -1,0 +1,85 @@
+{
+  "name": "wtfjs",
+  "version": "1.22.8",
+  "description": "A list of funny and tricky JavaScript examples",
+  "bin": {
+    "wtfjs": "wtfjs.js"
+  },
+  "scripts": {
+    "toc": "npx doctoc --github --title '# Table of Contents' --maxlevel 2 README*.md",
+    "format": "prettier --write .",
+    "test": "prettier --check .",
+    "release": "npx semantic-release",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/denysdovhan/wtfjs.git"
+  },
+  "keywords": [
+    "javascript",
+    "specification",
+    "notes",
+    "wtf",
+    "learning",
+    "guide",
+    "handbook"
+  ],
+  "author": "Denys Dovhan <denysdovhan@gmail.com> (http://denysdovhan.com)",
+  "license": "WTFPL 2.0",
+  "bugs": {
+    "url": "https://github.com/denysdovhan/wtfjs/issues"
+  },
+  "homepage": "https://github.com/denysdovhan/wtfjs#readme",
+  "devDependencies": {
+    "@semantic-release/git": "^10.0.1",
+    "doctoc": "^2.1.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.0",
+    "prettier": "^2.6.2",
+    "semantic-release": "^19.0.2"
+  },
+  "dependencies": {
+    "boxen": "^7.0.0",
+    "chalk": "^5.0.1",
+    "default-pager": "^1.1.0",
+    "meow": "^10.1.4",
+    "msee": "^0.3.3",
+    "through2": "^4.0.2",
+    "update-notifier": "^6.0.2"
+  },
+  "lint-staged": {
+    "README*.md": [
+      "npm run toc",
+      "prettier --write --ignore-unknown"
+    ],
+    "**/*": "prettier --write --ignore-unknown"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "prettier": {
+    "embeddedLanguageFormatting": "off"
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/npm",
+      "@semantic-release/github",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "README*.md",
+            "*.js",
+            "package.json",
+            "package-lock.json"
+          ]
+        }
+      ]
+    ]
+  }
+}
