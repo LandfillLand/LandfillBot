@@ -1,153 +1,126 @@
-# <img src="https://raw.githubusercontent.com/IGCyukira/i0c.cc/refs/heads/main/7F3AA226732D061E8AC829AD323B314D1.webp" alt="i0c.cc" width="420">
+[996.ICU](https://996.icu/#/en_US)
+=======
+**Please note that there exists NO other official account, app or merchandise except for the official domain and this repository.**
 
-Universal redirect runtime for fetch-compatible edge platforms (Cloudflare Workers, Vercel Edge Functions, Netlify Edge Functions). It enforces HTTPS, serves a favicon, and applies redirect or proxy rules defined in a remote `redirects.json` file.
+* [中文版](./README_CN.md)
 
-Live previews:
-- Primary domain: https://i0c.cc
-- Vercel deployment: https://vc.i0c.cc
-- Netlify deployment: https://nf.i0c.cc
+The name `996.ICU` refers to **"Work by '996', sick in ICU"**, an ironic saying among Chinese developers, which means that by following the "996" work schedule, you are risking yourself getting into the ICU (Intensive Care Unit).
 
-## One-click deploy
+[![Badge](https://img.shields.io/badge/link-996.icu-%23FF4D5B.svg?style=flat-square)](https://996.icu/#/en_US)
+[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg?style=flat-square)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
+[![Slack](https://img.shields.io/badge/slack-996icu-green.svg?style=flat-square)](https://join.slack.com/t/996icu/shared_invite/enQtNjI0MjEzMTUxNDI0LTkyMGViNmJiZjYwOWVlNzQ3NmQ4NTQyMDRiZTNmOWFkMzYxZWNmZGI0NDA4MWIwOGVhOThhMzc3NGQyMDBhZDc)
+[![HitCount](http://hits.dwyl.com/996icu/996ICU.svg)](http://hits.dwyl.com/996icu/996ICU)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository=https://github.com/IGCyukira/i0c.cc)  <br>
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/IGCyukira/i0c.cc)  <br>
-[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/IGCyukira/i0c.cc)
 
-After deploying:
-- Set `REDIRECTS_CONFIG_URL` or the repo/branch/path trio in your platform’s dashboard so the runtime can load the correct `redirects.json`.
-- Sync secrets across environments if you override other handler options (for example, cache bindings).
-- Re-run `npm run build` locally when updating the shared redirect logic, then redeploy.
+Related press coverage:
+---
+* *RadiiChina:* [GitHub Protest Over Chinese Tech Companies’ “996” Culture Goes Viral](https://radiichina.com/github-protest-chinese-tech-996/)
+* *Financial Times:*  [China tech worker protest against long working hours goes viral](https://www.ft.com/content/72754638-55d1-11e9-91f9-b6515a54c5b1)
+* *Wired:* [How GitHub is helping overworked Chinese programmers](https://www.wired.com/story/how-github-helping-overworked-chinese-programmers/)
 
-## Choose an adapter
+See a [full list of press](externals/news_EN.md)
 
-- Cloudflare Workers: [src/platforms/cloudflare.ts](src/platforms/cloudflare.ts)  
-- Vercel Edge Functions: [src/platforms/vercel-edge.ts](src/platforms/vercel-edge.ts)  
-- Netlify Edge Functions: [src/platforms/netlify-edge.ts](src/platforms/netlify-edge.ts)  
 
-Need a custom runtime? Import `handleRedirectRequest` from [src/lib/handler.ts](src/lib/handler.ts) and call it with your own `Request` object plus optional `HandlerOptions` (for example, to override the config URL or provide a custom cache implementation).
 
-## Environment Variables and Configuration
+What is 996?
+---
 
-### SEO Configuration
+A "996" work schedule refers to an unofficial work schedule (9 a.m.&ndash;9 p.m., 6 days per week) that has been gaining popularity. Serving a company that encourages the "996" work schedule usually means working for at least 60 hours per week.
+Visit [996 working hour system](https://en.wikipedia.org/wiki/996_working_hour_system) on Wikipedia for more details.
 
-- `ROBOTS_POLICY`: Controls the `robots.txt` policy.
-  - Set to `allow`: Generates `Allow: /` and includes `Sitemap.xml`.
-  - Set to default or other values: Outputs `Disallow: /` and omits `Sitemap.xml`.
 
-### Configure the redirects source
+What can I do?
+---
 
-You can override the default GitHub location without touching the code. Set any of the environment variables below; the runtime will pick them up automatically on Cloudflare (Worker bindings) or Vercel (process.env).
+- Update this [list](blacklist/README.md) with evidence to help every worker.  [Third party perfect list channel](https://www.996action.com/index.php/889799)
+- Add this [badge](externals/instruction.md) to your project to support 996.ICU.  
+- License your awesome projects with the [Anti 996 License](LICENSE).  
+- Add [proposals](proposal/README.md) to give advice about the development of 996.ICU.
+- Go home at 6 pm without feeling sorry.
 
-- `REDIRECTS_CONFIG_URL` (fallback: `CONFIG_URL`) — Absolute URL of the `redirects.json`. This short-circuits the repo/branch/path logic.
-- `REDIRECTS_CONFIG_REPO` (fallback: `CONFIG_REPO`) — GitHub repo in `owner/name` form.
-- `REDIRECTS_CONFIG_BRANCH` (fallback: `CONFIG_BRANCH`) — Branch that hosts the data file.
-- `REDIRECTS_CONFIG_PATH` (fallback: `CONFIG_PATH`) — Path to the JSON file inside the repo.
 
-If repo, branch, or path are provided (with or without a direct URL), the handler automatically constructs the raw GitHub URL. With no environment overrides, the defaults remain `IGCyukira/i0c.cc`, branch `data`, file `redirects.json`.
+Voices
+---
 
-### `redirects.json` Quick Reference
+### State Media
+- [The 996 shall disappear](http://www.xinhuanet.com/politics/2019-04/15/c_1124370790.htm)
 
-You can also deploy the [WebUI panel](https://github.com/IGCyukira/i0c.cc-webui) to edit `redirects.json` online.
 
-Provide a `Slots` (or `slots` / `SLOT`) object in `redirects.json` to define all routing rules. The table below lists the available fields for each route:
+### Capitalists
+- **Jack Ma, founder of Alibaba**: `It is a huge blessing to be able to '996'`.
+- **Richard Liu, founder of JD.com**: `We will never force our employee to work as '996'`.
+(However, as a result many anonymous employees claim that there is a **list** of departments which **ranked** them by overtime hours. The shortest will take punishments. And the leaders never leave evidences when asking employees to work as '996'.)
+- **Bai Ya, founder of Youzan**: `This will definitely be a right decision when we look back in a few years.`
 
-| Field        | Type     | Default | Description |
-|--------------|----------|---------|-------------|
-| `type`       | string   | `prefix` | Route mode: `prefix` for prefix redirects, `exact` for exact matches, `proxy` for reverse proxying |
-| `target`     | string   | `""`    | Destination URL (use exactly one of `target` / `to` / `url`) |
-| `to` / `url` | string   | `""`    | Alias fields (use exactly one of `target` / `to` / `url`) |
-| `appendPath` | boolean  | `true`  | Whether to append the remaining path when using `prefix` / `proxy` mode (not applicable to `exact`) |
-| `status`     | number   | `302`   | HTTP status code for non-proxy responses (do not set for `proxy`) |
-| `priority`   | number   | by order | Determines rule precedence for the same path; smaller numbers are matched first |
+### Developers
+- **Guido van Rossum, founder of Python**: [`The '996' working schedule is inhumane.`](https://twitter.com/gvanrossum/status/1111628076801236993)
 
-- Keys must start with `/` and can use colon parameters (such as `:id`) or the `*` wildcard; captures can be referenced in the target with `$1`, `:id`, and so on.
-- The `proxy` type forwards the request to the destination and returns the upstream response; other types respond with a `Location` redirect.
-- To configure multiple rules for the same path, provide an array. Array order controls the default priority, or you can specify `priority` explicitly. Smaller numbers match earlier.
 
-Tip: add the schema reference below to unlock autocomplete and validation in supporting editors (the schema lives on `main`, so it still applies if the JSON sits in a data branch):
+Principles and purposes
+---
 
-```jsonc
-{
-  "$schema": "https://raw.githubusercontent.com/IGCyukira/i0c.cc/main/redirects.schema.json",
-  "Slots": {
-    // ...
-  }
-}
+* 996.ICU is an initiative initiated by IT practitioners. We welcome people from other fields and other countries to join the discussion.
 
-```
+* This is not a political movement. We firmly uphold the labor law and request employers to respect the legitimate rights and interests of their employees.
 
-#### Sample `redirects.json`
+* It is great progress from closed source to open source, and it will also be great progress from open source to emphasizing labor rights at the same time. What we want is to create an open source software license that advocates workers' rights.
 
-```jsonc
-{
-  "Slots": {
-    // Fallback: send any unmatched path to the site homepage
-    "/": "https://example.com",
+* We are willing to hear all positive and constructive proposals and advocate mature and responsible speech.
 
-    // Multiple rules for one path, with priority controlling the order
-    "/docs/:page": [
-      {
-        "type": "exact",
-        "target": "https://kb.example.com/:page",
-        "status": 302,
-        "priority": 1
-      },
-      {
-        "type": "prefix",
-        "target": "https://docs.example.com/:page",
-        "appendPath": false,
-        "status": 301,
-        "priority": 5
-      }
-    ],
 
-    // Simple redirect: campaign landing page
-    "/promo": {
-      "target": "https://example.com/campaign",
-      "status": 308
-    },
+Expanding influence
+---
 
-    // API example:
-    //   1. /api matches the health check exactly and returns 200
-    //   2. Other requests go to the primary API
-    //   3. Failover to the backup API if the primary fails
-    "/api": [
-      {
-        "type": "exact",
-        "target": "https://status.example.com/healthz",
-        "status": 200,
-        "priority": 1
-      },
-      {
-        "type": "proxy",
-        "target": "https://api.example.com",
-        "appendPath": true,
-        "priority": 10
-      },
-      {
-        "type": "proxy",
-        "target": "https://backup-api.example.com",
-        "appendPath": true,
-        "priority": 20
-      }
-    ],
+Please feel free to [translate 996.ICU's contents](i18n/README.md), adjust the format, add some contents or fix grammatical errors. Please note that adding too many translations is getting off the track.
 
-    // Wildcard: proxy /media/* to the CDN and keep the remainder of the path
-    "/media/*": {
-      "type": "proxy",
-      "target": "https://cdn.example.com/$1"
-    },
+Community powers
+---
 
-    // Prefix redirect: admin console entry, keeping the original path
-    "/admin": {
-      "type": "prefix",
-      "target": "https://console.example.com",
-      "appendPath": true,
-      "status": 307
-    }
-  }
-}
+ - [955.WLB](https://github.com/formulahendry/955.WLB) is a repo that maintains a whitelist of 955 work-life balanced companies.
+ - [996.LIST](https://github.com/fengT-T/996_list) is a repo of a rank list of 996 companies and 955 companies.
+ - [996.YAOCL](https://github.com/boycott996/yaocl) Yet Another Overtime Corps List, current another anonymous voting list.
+ - [996.Leave](https://github.com/623637646/996.Leave) encourages & introduces working overseas.
+ - [996.RIP](https://web.archive.org/web/20190422174052/https://996.rip/) Old news never vanished.
+ - [996.Petition](https://github.com/xokctah/996.petition) initiates petitions by sending open letters to relevant government departments.
+ - [996.avengers](https://github.com/996-icu-avengers/Natasha) adds `996ICU` and `955WLB` tags on recruitment websites.
+ - [996.OD](https://github.com/zhouF96/996.OD) occupational diseases are the forewarning of ICU.
+ - [996.Q](https://github.com/alexddhuang/996.Q) A repository to collect mocks, jokes, or gags about 996. 
+ - [996.survey](https://github.com/0594mazhiyuan/996.survey) A survey of the status of 996.
+ - [support.996.ICU](https://github.com/msworkers/support.996.ICU) Microsoft and GitHub Workers Support 996.ICU
+ - [996.Blockchain](https://github.com/996BC/996.Blockchain) Blockchain for the 996 evidence.
+ - [996.Error](https://github.com/MagicLu550/996Error) Collect "996" exceptions written in various languages and can be used directly in the project.
 
-```
+Where are the issues?
+---
 
-For the Chinese version, see [README.zh-CN.md](./README.zh-CN.md).
+Even with interaction limits on, the issues area was totally out of control.
+So I **personally** decided to switch it off, not by GitHub or others.
+
+
+License
+---
+
+[Anti-996 License](LICENSE)
+
+ - The purpose of this license is to prevent anti-labour-law companies from using the software or codes under the license, and force those companies to weigh their way of working
+ - See a [full list of projects](awesomelist/README.md) under Anti-996 License
+
+ - This draft is adapted from the MIT license. For a more detailed explanation, please see [Wiki](https://github.com/kattgu7/996-License-Draft/wiki). This license is designed to be compatible with all major open source licenses.  
+ - For law professionals or anyone who is willing to contribute to future version directly, please go to [Anti-996-License-1.0](https://github.com/kattgu7/996-License-Draft). Thank you.
+
+Donate
+---
+We accept following crypto currencies:
+
+- **ETH**: `0x57a7e421c8edfc7f13612f68a54365fc729f2355`
+
+- **USDT**(ERC20): `0x57a7e421c8edfc7f13612f68a54365fc729f2355`
+
+- **BTC**: `1CKB19MxFppcXC3GMG84URuuegifsy8GAr`
+
+Donations will be used to sustain/maintain the website.
+
+Contact
+---
+
+You can reach me by [E-mail](mailto:996icu.repo@gmail.com) if you need.
