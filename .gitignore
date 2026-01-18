@@ -1,23 +1,29 @@
-.claude/
-.DS_Store
-.idea/
-.jshintrc
-.project
-.puppeteer_profile/
-.vs/
-.vscode/
+# Patterns that are specific to a text editor, IDE, operating system, or user
+# environment are not added here. They should be added to your local gitignore
+# file instead:
+# https://docs.github.com/en/get-started/git-basics/ignoring-files#configuring-ignored-files-for-all-repositories-on-your-computer
 
-*.swp
-npm-debug.log
+# Build subdirectories.
+/*build*
+!/build-aux
+!/build_msvc
 
-test/e2e/chromium
-test/e2e/output-screenshots
-test/treeshake/index.bundle.js
-test/treeshake/index.bundle.min.js
-test/treeshake/index.webgpu.bundle.js
-test/treeshake/index.webgpu.bundle.min.js
-test/treeshake/index.webgpu.nodes.bundle.js
-test/treeshake/index.webgpu.nodes.bundle.min.js
-test/unit/build
+*.pyc
 
-**/node_modules
+# Only ignore unexpected patches
+*.patch
+!ci/test/*.patch
+!contrib/guix/patches/*.patch
+!depends/patches/**/*.patch
+
+/CMakeUserPresets.json
+
+# Previous releases
+/releases
+
+# cargo default target dir
+target/
+
+/guix-build-*
+
+/ci/scratch/

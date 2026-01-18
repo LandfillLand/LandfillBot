@@ -1,18 +1,20 @@
 # Security Policy
 
-If you have discovered a security vulnerability in this project, please report it
-privately. **Do not disclose it as a public issue.** This gives us time to work with you
-to fix the issue before public exposure, reducing the chance that the exploit will be
-used before a patch is released.
+## Supported Versions
 
-You may submit the report in the following ways:
+See our website for versions of Bitcoin Core that are currently supported with
+security updates: https://bitcoincore.org/en/lifecycle/#schedule
 
-- Send an email to hello@mrdoob.com.
+## Reporting a Vulnerability
 
-Please provide the following information in your report:
+To report security issues send an email to security@bitcoincore.org (not for support).
 
-- A description of the vulnerability and its impact.
-- How to reproduce the issue.
+The following keys may be used to communicate sensitive information to developers:
 
-This project is maintained by volunteers on a reasonable-effort basis. As such,
-we ask that you give us 90 days to work on a fix before public exposure.
+| Name | Fingerprint |
+|------|-------------|
+| Pieter Wuille | 133E AC17 9436 F14A 5CF1  B794 860F EB80 4E66 9320 |
+| Michael Ford | E777 299F C265 DD04 7930  70EB 944D 35F9 AC3D B76A |
+| Ava Chow | 1528 1230 0785 C964 44D3  334D 1756 5732 E08E 5E41 |
+
+You can import a key by running the following command with that individual’s fingerprint: `gpg --keyserver hkps://keys.openpgp.org --recv-keys "<fingerprint>"` Ensure that you put quotes around fingerprints containing spaces.
