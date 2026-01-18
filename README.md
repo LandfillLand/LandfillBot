@@ -1,124 +1,148 @@
-<a href="https://excalidraw.com/" target="_blank" rel="noopener">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" alt="Excalidraw" srcset="https://excalidraw.nyc3.cdn.digitaloceanspaces.com/github/excalidraw_github_cover_2_dark.png" />
-    <img alt="Excalidraw" src="https://excalidraw.nyc3.cdn.digitaloceanspaces.com/github/excalidraw_github_cover_2.png" />
-  </picture>
-</a>
+# Apollo-11
 
-<h4 align="center">
-  <a href="https://excalidraw.com">Excalidraw Editor</a> |
-  <a href="https://plus.excalidraw.com/blog">Blog</a> |
-  <a href="https://docs.excalidraw.com">Documentation</a> |
-  <a href="https://plus.excalidraw.com">Excalidraw+</a>
-</h4>
+[![NASA][1]][2]
+[![SWH]][SWH_URL]
+[![Comanche]][ComancheMilestone]
+[![Luminary]][LuminaryMilestone]
 
-<div align="center">
-  <h2>
-    An open source virtual hand-drawn style whiteboard. </br>
-    Collaborative and end-to-end encrypted. </br>
-  <br />
-  </h2>
-</div>
+🌐
+[Azerbaijani][AZ],
+[bahasa Indonesia][ID],
+[Basa Jawa][JV],
+[Català][CA],
+[Čeština][CZ],
+[Dansk][DA],
+[Deutsch][DE],
+[English][EN],
+[Español][ES],
+[Français][FR],
+[Galego][GL],
+[Italiano][IT],
+[Kurdî][KU],
+[Lietuvių][LT],
+[Mongolian][MN],
+[Nederlands][NL],
+[Norsk][NO],
+[Polski][PL],
+[Português][PT_BR],
+[Română][RO],
+[Suomi][FI],
+[Svenska][SV],
+[tiếng Việt][VI],
+[Türkçe][TR],
+[Ελληνικά][GR],
+[Беларуская мова][BE],
+[Русский][RU],
+[Українська][UK],
+[العربية][AR],
+[فارسی][FA],
+[नेपाली भाषा][NE]
+[हिंदी][HI_IN],
+[অসমীয়া][AS_IN],
+[বাংলা][BD_BN],
+[မြန်မာ][MM],
+[한국어][KO_KR],
+[日本語][JA],
+[正體中文][ZH_TW],
+[简体中文][ZH_CN],
+[മലയാളം][ML]
 
-<br />
-<p align="center">
-  <a href="https://github.com/excalidraw/excalidraw/blob/master/LICENSE">
-    <img alt="Excalidraw is released under the MIT license." src="https://img.shields.io/badge/license-MIT-blue.svg"  /></a>
-  <a href="https://www.npmjs.com/package/@excalidraw/excalidraw">
-    <img alt="npm downloads/month" src="https://img.shields.io/npm/dm/@excalidraw/excalidraw"  /></a>
-  <a href="https://docs.excalidraw.com/docs/introduction/contributing">
-    <img alt="PRs welcome!" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat"  /></a>
-  <a href="https://discord.gg/UexuTaE">
-    <img alt="Chat on Discord" src="https://img.shields.io/discord/723672430744174682?color=738ad6&label=Chat%20on%20Discord&logo=discord&logoColor=ffffff&widge=false"/></a>
-  <a href="https://deepwiki.com/excalidraw/excalidraw">
-    <img alt="Ask DeepWiki" src="https://deepwiki.com/badge.svg" /></a>
-  <a href="https://twitter.com/excalidraw">
-    <img alt="Follow Excalidraw on Twitter" src="https://img.shields.io/twitter/follow/excalidraw.svg?label=follow+@excalidraw&style=social&logo=twitter"/></a>
-</p>
-
-<div align="center">
-  <figure>
-    <a href="https://excalidraw.com" target="_blank" rel="noopener">
-      <img src="https://excalidraw.nyc3.cdn.digitaloceanspaces.com/github%2Fproduct_showcase.png" alt="Product showcase" />
-    </a>
-    <figcaption>
-      <p align="center">
-        Create beautiful hand-drawn like diagrams, wireframes, or whatever you like.
-      </p>
-    </figcaption>
-  </figure>
-</div>
-
-## Features
-
-The Excalidraw editor (npm package) supports:
-
-- 💯&nbsp;Free & open-source.
-- 🎨&nbsp;Infinite, canvas-based whiteboard.
-- ✍️&nbsp;Hand-drawn like style.
-- 🌓&nbsp;Dark mode.
-- 🏗️&nbsp;Customizable.
-- 📷&nbsp;Image support.
-- 😀&nbsp;Shape libraries support.
-- 🌐&nbsp;Localization (i18n) support.
-- 🖼️&nbsp;Export to PNG, SVG & clipboard.
-- 💾&nbsp;Open format - export drawings as an `.excalidraw` json file.
-- ⚒️&nbsp;Wide range of tools - rectangle, circle, diamond, arrow, line, free-draw, eraser...
-- ➡️&nbsp;Arrow-binding & labeled arrows.
-- 🔙&nbsp;Undo / Redo.
-- 🔍&nbsp;Zoom and panning support.
-
-## Excalidraw.com
-
-The app hosted at [excalidraw.com](https://excalidraw.com) is a minimal showcase of what you can build with Excalidraw. Its [source code](https://github.com/excalidraw/excalidraw/tree/master/excalidraw-app) is part of this repository as well, and the app features:
-
-- 📡&nbsp;PWA support (works offline).
-- 🤼&nbsp;Real-time collaboration.
-- 🔒&nbsp;End-to-end encryption.
-- 💾&nbsp;Local-first support (autosaves to the browser).
-- 🔗&nbsp;Shareable links (export to a readonly link you can share with others).
-
-We'll be adding these features as drop-in plugins for the npm package in the future.
-
-## Quick start
-
-**Note:** following instructions are for installing the Excalidraw [npm package](https://www.npmjs.com/package/@excalidraw/excalidraw) when integrating Excalidraw into your own app. To run the repository locally for development, please refer to our [Development Guide](https://docs.excalidraw.com/docs/introduction/development).
-
-Use `npm` or `yarn` to install the package.
-
-```bash
-npm install react react-dom @excalidraw/excalidraw
-# or
-yarn add react react-dom @excalidraw/excalidraw
-```
-
-Check out our [documentation](https://docs.excalidraw.com/docs/@excalidraw/excalidraw/installation) for more details!
+[AR]:Translations/README.ar.md
+[AS_IN]:Translations/README.as_in.md
+[AZ]:Translations/README.az.md
+[BD_BN]:Translations/README.bd_bn.md
+[BE]:Translations/README.be.md
+[CA]:Translations/README.ca.md
+[CZ]:Translations/README.cz.md
+[DA]:Translations/README.da.md
+[DE]:Translations/README.de.md
+[EN]:README.md
+[ES]:Translations/README.es.md
+[FA]:Translations/README.fa.md
+[FI]:Translations/README.fi.md
+[FR]:Translations/README.fr.md
+[GL]:Translations/README.gl.md
+[GR]:Translations/README.gr.md
+[HI_IN]:Translations/README.hi_in.md
+[ID]:Translations/README.id.md
+[IT]:Translations/README.it.md
+[JA]:Translations/README.ja.md
+[JV]:Translations/README.jv.md
+[KO_KR]:Translations/README.ko_kr.md
+[KU]:Translations/README.ku.md
+[LT]:Translations/README.lt.md
+[MM]:Translations/README.mm.md
+[MN]:Translations/README.mn.md
+[NE]:Translations/README.ne.md
+[NL]:Translations/README.nl.md
+[NO]:Translations/README.no.md
+[PL]:Translations/README.pl.md
+[PT_BR]:Translations/README.pt_br.md
+[RO]:Translations/README.ro.md
+[RU]:Translations/README.ru.md
+[SV]:Translations/README.sv.md
+[TR]:Translations/README.tr.md
+[UK]:Translations/README.uk.md
+[VI]:Translations/README.vi.md
+[ZH_CN]:Translations/README.zh_cn.md
+[ZH_TW]:Translations/README.zh_tw.md
+[ML]:Translations/README.ml.md
+Original Apollo 11 guidance computer (AGC) source code for Command Module (Comanche055) and Lunar Module (Luminary099). Digitized by the folks at [Virtual AGC][3] and [MIT Museum][4]. The goal is to be a repo for the original Apollo 11 source code. As such, PRs are welcome for any issues identified between the transcriptions in this repository and the original source scans for [Luminary 099][5] and [Comanche 055][6], as well as any files I may have missed.
 
 ## Contributing
 
-- Missing something or found a bug? [Report here](https://github.com/excalidraw/excalidraw/issues).
-- Want to contribute? Check out our [contribution guide](https://docs.excalidraw.com/docs/introduction/contributing) or let us know on [Discord](https://discord.gg/UexuTaE).
-- Want to help with translations? See the [translation guide](https://docs.excalidraw.com/docs/introduction/contributing#translating).
+Please read [CONTRIBUTING.md][7] before opening a pull request.
 
-## Integrations
+## Compiling
 
-- [VScode extension](https://marketplace.visualstudio.com/items?itemName=pomdtr.excalidraw-editor)
-- [npm package](https://www.npmjs.com/package/@excalidraw/excalidraw)
+If you are interested in compiling the original source code, check
+out [Virtual AGC][8].
 
-## Who's integrating Excalidraw
+## Attribution
 
-[Google Cloud](https://googlecloudcheatsheet.withgoogle.com/architecture) • [Meta](https://meta.com/) • [CodeSandbox](https://codesandbox.io/) • [Obsidian Excalidraw](https://github.com/zsviczian/obsidian-excalidraw-plugin) • [Replit](https://replit.com/) • [Slite](https://slite.com/) • [Notion](https://notion.so/) • [HackerRank](https://www.hackerrank.com/) • and many others
+&nbsp;         | &nbsp;
+:------------- | :-----
+Copyright      | Public domain
+Comanche055    | Part of the source code for Colossus 2A, the Command Module's (CM) Apollo Guidance Computer (AGC) for Apollo 11<br>`Assemble revision 055 of AGC program Comanche by NASA`<br>`2021113-051. 10:28 APR. 1, 1969`
+Luminary099    | Part of the source code for Luminary 1A, the Lunar Module's (LM) Apollo Guidance Computer (AGC) for Apollo 11<br>`Assemble revision 001 of AGC program LMY99 by NASA`<br>`2021112-061. 16:27 JUL. 14, 1969`
+Assembler      | yaYUL
+Contact        | Ron Burkey <info@sandroid.org>
+Website        | www.ibiblio.org/apollo
+Digitalisation | This source code has been transcribed or otherwise adapted from digitized images of a hardcopy from the MIT Museum. The digitization was performed by Paul Fjeld, and arranged for by Deborah Douglas of the Museum. Many thanks to both.
 
-## Sponsors & support
+### Contract and Approvals
 
-If you like the project, you can become a sponsor at [Open Collective](https://opencollective.com/excalidraw) or use [Excalidraw+](https://plus.excalidraw.com/).
+*Derived from [CONTRACT_AND_APPROVALS.agc]*
 
-## Thank you for supporting Excalidraw
+This AGC program shall also be referred to as Colossus 2A.
 
-[<img src="https://opencollective.com/excalidraw/tiers/sponsors/0/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/0/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/1/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/1/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/2/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/2/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/3/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/3/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/4/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/4/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/5/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/5/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/6/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/6/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/7/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/7/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/8/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/8/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/9/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/9/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/10/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/10/website)
+This program is intended for use in the Command Module as specified in report `R-577`. This program was prepared under DSR project `55-23870`, sponsored by the Manned Spacecraft Center of The National Aeronautics and Space Administration through contract `NAS 9-4065` with the Instrumentation Laboratory, Massachusetts Institute of Technology, Cambridge, Mass.
 
-<a href="https://opencollective.com/excalidraw#category-CONTRIBUTE" target="_blank"><img src="https://opencollective.com/excalidraw/tiers/backers.svg?avatarHeight=32"/></a>
+Submitted by         | Role | Date
+:------------------- | :--- | :---
+Margaret H. Hamilton | Colossus Programming Leader<br>Apollo Guidance and Navigation | 28 Mar 69
 
-Last but not least, we're thankful to these companies for offering their services for free:
+Approved by       | Role | Date
+:---------------- | :--- | :---
+Daniel J. Lickly  | Director, Mission Program Development<br>Apollo Guidance and Navigation Program | 28 Mar 69
+Fred H. Martin    | Colossus Project Manager<br>Apollo Guidance and Navigation Program | 28 Mar 69
+Norman E. Sears   | Director, Mission Development<br>Apollo Guidance and Navigation Program | 28 Mar 69
+Richard H. Battin | Director, Mission Development<br>Apollo Guidance and Navigation Program | 28 Mar 69
+David G. Hoag     | Director<br>Apollo Guidance and Navigation Program | 28 Mar 69
+Ralph R. Ragan    | Deputy Director<br>Instrumentation Laboratory | 28 Mar 69
 
-[![Vercel](./.github/assets/vercel.svg)](https://vercel.com) [![Sentry](./.github/assets/sentry.svg)](https://sentry.io) [![Crowdin](./.github/assets/crowdin.svg)](https://crowdin.com)
+[CONTRACT_AND_APPROVALS.agc]:https://github.com/chrislgarry/Apollo-11/blob/master/Comanche055/CONTRACT_AND_APPROVALS.agc
+[1]:https://flat.badgen.net/badge/NASA/Mission%20Overview/0B3D91
+[2]:https://www.nasa.gov/mission_pages/apollo/missions/apollo11.html
+[3]:http://www.ibiblio.org/apollo/
+[4]:http://web.mit.edu/museum/
+[5]:http://www.ibiblio.org/apollo/ScansForConversion/Luminary099/
+[6]:http://www.ibiblio.org/apollo/ScansForConversion/Comanche055/
+[7]:https://github.com/chrislgarry/Apollo-11/blob/master/CONTRIBUTING.md
+[8]:https://github.com/rburkey2005/virtualagc
+[SWH]:https://flat.badgen.net/badge/Software%20Heritage/Archive/0B3D91
+[SWH_URL]:https://archive.softwareheritage.org/browse/origin/https://github.com/chrislgarry/Apollo-11/
+[Comanche]:https://flat.badgen.net/github/milestones/chrislgarry/Apollo-11/1
+[ComancheMilestone]:https://github.com/chrislgarry/Apollo-11/milestone/1
+[Luminary]:https://flat.badgen.net/github/milestones/chrislgarry/Apollo-11/2
+[LuminaryMilestone]:https://github.com/chrislgarry/Apollo-11/milestone/2
