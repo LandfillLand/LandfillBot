@@ -1,1 +1,0 @@
-perf-util-y += hisi-ptt-pkt-decoder.o
