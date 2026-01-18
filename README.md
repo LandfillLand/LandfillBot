@@ -1,124 +1,153 @@
-<a href="https://excalidraw.com/" target="_blank" rel="noopener">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" alt="Excalidraw" srcset="https://excalidraw.nyc3.cdn.digitaloceanspaces.com/github/excalidraw_github_cover_2_dark.png" />
-    <img alt="Excalidraw" src="https://excalidraw.nyc3.cdn.digitaloceanspaces.com/github/excalidraw_github_cover_2.png" />
-  </picture>
-</a>
+# <img src="https://raw.githubusercontent.com/IGCyukira/i0c.cc/refs/heads/main/7F3AA226732D061E8AC829AD323B314D1.webp" alt="i0c.cc" width="420">
 
-<h4 align="center">
-  <a href="https://excalidraw.com">Excalidraw Editor</a> |
-  <a href="https://plus.excalidraw.com/blog">Blog</a> |
-  <a href="https://docs.excalidraw.com">Documentation</a> |
-  <a href="https://plus.excalidraw.com">Excalidraw+</a>
-</h4>
+Universal redirect runtime for fetch-compatible edge platforms (Cloudflare Workers, Vercel Edge Functions, Netlify Edge Functions). It enforces HTTPS, serves a favicon, and applies redirect or proxy rules defined in a remote `redirects.json` file.
 
-<div align="center">
-  <h2>
-    An open source virtual hand-drawn style whiteboard. </br>
-    Collaborative and end-to-end encrypted. </br>
-  <br />
-  </h2>
-</div>
+Live previews:
+- Primary domain: https://i0c.cc
+- Vercel deployment: https://vc.i0c.cc
+- Netlify deployment: https://nf.i0c.cc
 
-<br />
-<p align="center">
-  <a href="https://github.com/excalidraw/excalidraw/blob/master/LICENSE">
-    <img alt="Excalidraw is released under the MIT license." src="https://img.shields.io/badge/license-MIT-blue.svg"  /></a>
-  <a href="https://www.npmjs.com/package/@excalidraw/excalidraw">
-    <img alt="npm downloads/month" src="https://img.shields.io/npm/dm/@excalidraw/excalidraw"  /></a>
-  <a href="https://docs.excalidraw.com/docs/introduction/contributing">
-    <img alt="PRs welcome!" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat"  /></a>
-  <a href="https://discord.gg/UexuTaE">
-    <img alt="Chat on Discord" src="https://img.shields.io/discord/723672430744174682?color=738ad6&label=Chat%20on%20Discord&logo=discord&logoColor=ffffff&widge=false"/></a>
-  <a href="https://deepwiki.com/excalidraw/excalidraw">
-    <img alt="Ask DeepWiki" src="https://deepwiki.com/badge.svg" /></a>
-  <a href="https://twitter.com/excalidraw">
-    <img alt="Follow Excalidraw on Twitter" src="https://img.shields.io/twitter/follow/excalidraw.svg?label=follow+@excalidraw&style=social&logo=twitter"/></a>
-</p>
+## One-click deploy
 
-<div align="center">
-  <figure>
-    <a href="https://excalidraw.com" target="_blank" rel="noopener">
-      <img src="https://excalidraw.nyc3.cdn.digitaloceanspaces.com/github%2Fproduct_showcase.png" alt="Product showcase" />
-    </a>
-    <figcaption>
-      <p align="center">
-        Create beautiful hand-drawn like diagrams, wireframes, or whatever you like.
-      </p>
-    </figcaption>
-  </figure>
-</div>
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository=https://github.com/IGCyukira/i0c.cc)  <br>
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/IGCyukira/i0c.cc)  <br>
+[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/IGCyukira/i0c.cc)
 
-## Features
+After deploying:
+- Set `REDIRECTS_CONFIG_URL` or the repo/branch/path trio in your platform’s dashboard so the runtime can load the correct `redirects.json`.
+- Sync secrets across environments if you override other handler options (for example, cache bindings).
+- Re-run `npm run build` locally when updating the shared redirect logic, then redeploy.
 
-The Excalidraw editor (npm package) supports:
+## Choose an adapter
 
-- 💯&nbsp;Free & open-source.
-- 🎨&nbsp;Infinite, canvas-based whiteboard.
-- ✍️&nbsp;Hand-drawn like style.
-- 🌓&nbsp;Dark mode.
-- 🏗️&nbsp;Customizable.
-- 📷&nbsp;Image support.
-- 😀&nbsp;Shape libraries support.
-- 🌐&nbsp;Localization (i18n) support.
-- 🖼️&nbsp;Export to PNG, SVG & clipboard.
-- 💾&nbsp;Open format - export drawings as an `.excalidraw` json file.
-- ⚒️&nbsp;Wide range of tools - rectangle, circle, diamond, arrow, line, free-draw, eraser...
-- ➡️&nbsp;Arrow-binding & labeled arrows.
-- 🔙&nbsp;Undo / Redo.
-- 🔍&nbsp;Zoom and panning support.
+- Cloudflare Workers: [src/platforms/cloudflare.ts](src/platforms/cloudflare.ts)  
+- Vercel Edge Functions: [src/platforms/vercel-edge.ts](src/platforms/vercel-edge.ts)  
+- Netlify Edge Functions: [src/platforms/netlify-edge.ts](src/platforms/netlify-edge.ts)  
 
-## Excalidraw.com
+Need a custom runtime? Import `handleRedirectRequest` from [src/lib/handler.ts](src/lib/handler.ts) and call it with your own `Request` object plus optional `HandlerOptions` (for example, to override the config URL or provide a custom cache implementation).
 
-The app hosted at [excalidraw.com](https://excalidraw.com) is a minimal showcase of what you can build with Excalidraw. Its [source code](https://github.com/excalidraw/excalidraw/tree/master/excalidraw-app) is part of this repository as well, and the app features:
+## Environment Variables and Configuration
 
-- 📡&nbsp;PWA support (works offline).
-- 🤼&nbsp;Real-time collaboration.
-- 🔒&nbsp;End-to-end encryption.
-- 💾&nbsp;Local-first support (autosaves to the browser).
-- 🔗&nbsp;Shareable links (export to a readonly link you can share with others).
+### SEO Configuration
 
-We'll be adding these features as drop-in plugins for the npm package in the future.
+- `ROBOTS_POLICY`: Controls the `robots.txt` policy.
+  - Set to `allow`: Generates `Allow: /` and includes `Sitemap.xml`.
+  - Set to default or other values: Outputs `Disallow: /` and omits `Sitemap.xml`.
 
-## Quick start
+### Configure the redirects source
 
-**Note:** following instructions are for installing the Excalidraw [npm package](https://www.npmjs.com/package/@excalidraw/excalidraw) when integrating Excalidraw into your own app. To run the repository locally for development, please refer to our [Development Guide](https://docs.excalidraw.com/docs/introduction/development).
+You can override the default GitHub location without touching the code. Set any of the environment variables below; the runtime will pick them up automatically on Cloudflare (Worker bindings) or Vercel (process.env).
 
-Use `npm` or `yarn` to install the package.
+- `REDIRECTS_CONFIG_URL` (fallback: `CONFIG_URL`) — Absolute URL of the `redirects.json`. This short-circuits the repo/branch/path logic.
+- `REDIRECTS_CONFIG_REPO` (fallback: `CONFIG_REPO`) — GitHub repo in `owner/name` form.
+- `REDIRECTS_CONFIG_BRANCH` (fallback: `CONFIG_BRANCH`) — Branch that hosts the data file.
+- `REDIRECTS_CONFIG_PATH` (fallback: `CONFIG_PATH`) — Path to the JSON file inside the repo.
 
-```bash
-npm install react react-dom @excalidraw/excalidraw
-# or
-yarn add react react-dom @excalidraw/excalidraw
+If repo, branch, or path are provided (with or without a direct URL), the handler automatically constructs the raw GitHub URL. With no environment overrides, the defaults remain `IGCyukira/i0c.cc`, branch `data`, file `redirects.json`.
+
+### `redirects.json` Quick Reference
+
+You can also deploy the [WebUI panel](https://github.com/IGCyukira/i0c.cc-webui) to edit `redirects.json` online.
+
+Provide a `Slots` (or `slots` / `SLOT`) object in `redirects.json` to define all routing rules. The table below lists the available fields for each route:
+
+| Field        | Type     | Default | Description |
+|--------------|----------|---------|-------------|
+| `type`       | string   | `prefix` | Route mode: `prefix` for prefix redirects, `exact` for exact matches, `proxy` for reverse proxying |
+| `target`     | string   | `""`    | Destination URL (use exactly one of `target` / `to` / `url`) |
+| `to` / `url` | string   | `""`    | Alias fields (use exactly one of `target` / `to` / `url`) |
+| `appendPath` | boolean  | `true`  | Whether to append the remaining path when using `prefix` / `proxy` mode (not applicable to `exact`) |
+| `status`     | number   | `302`   | HTTP status code for non-proxy responses (do not set for `proxy`) |
+| `priority`   | number   | by order | Determines rule precedence for the same path; smaller numbers are matched first |
+
+- Keys must start with `/` and can use colon parameters (such as `:id`) or the `*` wildcard; captures can be referenced in the target with `$1`, `:id`, and so on.
+- The `proxy` type forwards the request to the destination and returns the upstream response; other types respond with a `Location` redirect.
+- To configure multiple rules for the same path, provide an array. Array order controls the default priority, or you can specify `priority` explicitly. Smaller numbers match earlier.
+
+Tip: add the schema reference below to unlock autocomplete and validation in supporting editors (the schema lives on `main`, so it still applies if the JSON sits in a data branch):
+
+```jsonc
+{
+  "$schema": "https://raw.githubusercontent.com/IGCyukira/i0c.cc/main/redirects.schema.json",
+  "Slots": {
+    // ...
+  }
+}
+
 ```
 
-Check out our [documentation](https://docs.excalidraw.com/docs/@excalidraw/excalidraw/installation) for more details!
+#### Sample `redirects.json`
 
-## Contributing
+```jsonc
+{
+  "Slots": {
+    // Fallback: send any unmatched path to the site homepage
+    "/": "https://example.com",
 
-- Missing something or found a bug? [Report here](https://github.com/excalidraw/excalidraw/issues).
-- Want to contribute? Check out our [contribution guide](https://docs.excalidraw.com/docs/introduction/contributing) or let us know on [Discord](https://discord.gg/UexuTaE).
-- Want to help with translations? See the [translation guide](https://docs.excalidraw.com/docs/introduction/contributing#translating).
+    // Multiple rules for one path, with priority controlling the order
+    "/docs/:page": [
+      {
+        "type": "exact",
+        "target": "https://kb.example.com/:page",
+        "status": 302,
+        "priority": 1
+      },
+      {
+        "type": "prefix",
+        "target": "https://docs.example.com/:page",
+        "appendPath": false,
+        "status": 301,
+        "priority": 5
+      }
+    ],
 
-## Integrations
+    // Simple redirect: campaign landing page
+    "/promo": {
+      "target": "https://example.com/campaign",
+      "status": 308
+    },
 
-- [VScode extension](https://marketplace.visualstudio.com/items?itemName=pomdtr.excalidraw-editor)
-- [npm package](https://www.npmjs.com/package/@excalidraw/excalidraw)
+    // API example:
+    //   1. /api matches the health check exactly and returns 200
+    //   2. Other requests go to the primary API
+    //   3. Failover to the backup API if the primary fails
+    "/api": [
+      {
+        "type": "exact",
+        "target": "https://status.example.com/healthz",
+        "status": 200,
+        "priority": 1
+      },
+      {
+        "type": "proxy",
+        "target": "https://api.example.com",
+        "appendPath": true,
+        "priority": 10
+      },
+      {
+        "type": "proxy",
+        "target": "https://backup-api.example.com",
+        "appendPath": true,
+        "priority": 20
+      }
+    ],
 
-## Who's integrating Excalidraw
+    // Wildcard: proxy /media/* to the CDN and keep the remainder of the path
+    "/media/*": {
+      "type": "proxy",
+      "target": "https://cdn.example.com/$1"
+    },
 
-[Google Cloud](https://googlecloudcheatsheet.withgoogle.com/architecture) • [Meta](https://meta.com/) • [CodeSandbox](https://codesandbox.io/) • [Obsidian Excalidraw](https://github.com/zsviczian/obsidian-excalidraw-plugin) • [Replit](https://replit.com/) • [Slite](https://slite.com/) • [Notion](https://notion.so/) • [HackerRank](https://www.hackerrank.com/) • and many others
+    // Prefix redirect: admin console entry, keeping the original path
+    "/admin": {
+      "type": "prefix",
+      "target": "https://console.example.com",
+      "appendPath": true,
+      "status": 307
+    }
+  }
+}
 
-## Sponsors & support
+```
 
-If you like the project, you can become a sponsor at [Open Collective](https://opencollective.com/excalidraw) or use [Excalidraw+](https://plus.excalidraw.com/).
-
-## Thank you for supporting Excalidraw
-
-[<img src="https://opencollective.com/excalidraw/tiers/sponsors/0/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/0/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/1/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/1/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/2/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/2/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/3/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/3/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/4/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/4/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/5/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/5/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/6/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/6/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/7/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/7/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/8/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/8/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/9/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/9/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/10/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/10/website)
-
-<a href="https://opencollective.com/excalidraw#category-CONTRIBUTE" target="_blank"><img src="https://opencollective.com/excalidraw/tiers/backers.svg?avatarHeight=32"/></a>
-
-Last but not least, we're thankful to these companies for offering their services for free:
-
-[![Vercel](./.github/assets/vercel.svg)](https://vercel.com) [![Sentry](./.github/assets/sentry.svg)](https://sentry.io) [![Crowdin](./.github/assets/crowdin.svg)](https://crowdin.com)
+For the Chinese version, see [README.zh-CN.md](./README.zh-CN.md).
