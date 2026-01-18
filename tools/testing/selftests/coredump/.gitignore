@@ -1,4 +1,0 @@
-# SPDX-License-Identifier: GPL-2.0-only
-stackdump_test
-coredump_socket_test
-coredump_socket_protocol_test
