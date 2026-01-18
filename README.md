@@ -1,48 +1,124 @@
-# Animate.css
+<a href="https://excalidraw.com/" target="_blank" rel="noopener">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" alt="Excalidraw" srcset="https://excalidraw.nyc3.cdn.digitaloceanspaces.com/github/excalidraw_github_cover_2_dark.png" />
+    <img alt="Excalidraw" src="https://excalidraw.nyc3.cdn.digitaloceanspaces.com/github/excalidraw_github_cover_2.png" />
+  </picture>
+</a>
 
-[![GitHub Version](https://img.shields.io/github/release/animate-css/animate.css.svg?style=for-the-badge)](https://github.com/animate-css/animate.css/releases) [![Github Star](https://img.shields.io/github/stars/animate-css/animate.css.svg?style=for-the-badge)](https://github.com/animate-css/animate.css/stargazers) [![Github Fork](https://img.shields.io/github/forks/animate-css/animate.css.svg?style=for-the-badge)](https://github.com/animate-css/animate.css/network/members) [![License](https://img.shields.io/badge/license-hippocratic%20license-orange.svg?longCache=true&style=for-the-badge)](https://github.com/animate-css/animate.css/blob/main/LICENSE)
+<h4 align="center">
+  <a href="https://excalidraw.com">Excalidraw Editor</a> |
+  <a href="https://plus.excalidraw.com/blog">Blog</a> |
+  <a href="https://docs.excalidraw.com">Documentation</a> |
+  <a href="https://plus.excalidraw.com">Excalidraw+</a>
+</h4>
 
-> If you need the old docs - v3.x.x and under - you can find it [here](https://github.com/animate-css/animate.css/tree/a8d92e585b1b302f7749809c3308d5e381f9cb17).
+<div align="center">
+  <h2>
+    An open source virtual hand-drawn style whiteboard. </br>
+    Collaborative and end-to-end encrypted. </br>
+  <br />
+  </h2>
+</div>
 
-## _Just-add-water CSS animation_
+<br />
+<p align="center">
+  <a href="https://github.com/excalidraw/excalidraw/blob/master/LICENSE">
+    <img alt="Excalidraw is released under the MIT license." src="https://img.shields.io/badge/license-MIT-blue.svg"  /></a>
+  <a href="https://www.npmjs.com/package/@excalidraw/excalidraw">
+    <img alt="npm downloads/month" src="https://img.shields.io/npm/dm/@excalidraw/excalidraw"  /></a>
+  <a href="https://docs.excalidraw.com/docs/introduction/contributing">
+    <img alt="PRs welcome!" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat"  /></a>
+  <a href="https://discord.gg/UexuTaE">
+    <img alt="Chat on Discord" src="https://img.shields.io/discord/723672430744174682?color=738ad6&label=Chat%20on%20Discord&logo=discord&logoColor=ffffff&widge=false"/></a>
+  <a href="https://deepwiki.com/excalidraw/excalidraw">
+    <img alt="Ask DeepWiki" src="https://deepwiki.com/badge.svg" /></a>
+  <a href="https://twitter.com/excalidraw">
+    <img alt="Follow Excalidraw on Twitter" src="https://img.shields.io/twitter/follow/excalidraw.svg?label=follow+@excalidraw&style=social&logo=twitter"/></a>
+</p>
 
-## Installation
+<div align="center">
+  <figure>
+    <a href="https://excalidraw.com" target="_blank" rel="noopener">
+      <img src="https://excalidraw.nyc3.cdn.digitaloceanspaces.com/github%2Fproduct_showcase.png" alt="Product showcase" />
+    </a>
+    <figcaption>
+      <p align="center">
+        Create beautiful hand-drawn like diagrams, wireframes, or whatever you like.
+      </p>
+    </figcaption>
+  </figure>
+</div>
 
-Install with npm:
+## Features
 
-```shell
-npm install animate.css --save
+The Excalidraw editor (npm package) supports:
+
+- 💯&nbsp;Free & open-source.
+- 🎨&nbsp;Infinite, canvas-based whiteboard.
+- ✍️&nbsp;Hand-drawn like style.
+- 🌓&nbsp;Dark mode.
+- 🏗️&nbsp;Customizable.
+- 📷&nbsp;Image support.
+- 😀&nbsp;Shape libraries support.
+- 🌐&nbsp;Localization (i18n) support.
+- 🖼️&nbsp;Export to PNG, SVG & clipboard.
+- 💾&nbsp;Open format - export drawings as an `.excalidraw` json file.
+- ⚒️&nbsp;Wide range of tools - rectangle, circle, diamond, arrow, line, free-draw, eraser...
+- ➡️&nbsp;Arrow-binding & labeled arrows.
+- 🔙&nbsp;Undo / Redo.
+- 🔍&nbsp;Zoom and panning support.
+
+## Excalidraw.com
+
+The app hosted at [excalidraw.com](https://excalidraw.com) is a minimal showcase of what you can build with Excalidraw. Its [source code](https://github.com/excalidraw/excalidraw/tree/master/excalidraw-app) is part of this repository as well, and the app features:
+
+- 📡&nbsp;PWA support (works offline).
+- 🤼&nbsp;Real-time collaboration.
+- 🔒&nbsp;End-to-end encryption.
+- 💾&nbsp;Local-first support (autosaves to the browser).
+- 🔗&nbsp;Shareable links (export to a readonly link you can share with others).
+
+We'll be adding these features as drop-in plugins for the npm package in the future.
+
+## Quick start
+
+**Note:** following instructions are for installing the Excalidraw [npm package](https://www.npmjs.com/package/@excalidraw/excalidraw) when integrating Excalidraw into your own app. To run the repository locally for development, please refer to our [Development Guide](https://docs.excalidraw.com/docs/introduction/development).
+
+Use `npm` or `yarn` to install the package.
+
+```bash
+npm install react react-dom @excalidraw/excalidraw
+# or
+yarn add react react-dom @excalidraw/excalidraw
 ```
 
-Install with yarn:
-
-```shell
-yarn add animate.css
-```
-
-## Getting Started
-
-You can find the Animate.css documentation on the [website](https://animate.style/).
-
-## Accessibility
-
-Animate.css supports the [`prefers-reduced-motion` media query](https://webkit.org/blog/7551/responsive-design-for-motion/) so that users with motion sensitivity can opt out of animations. On supported platforms (currently all the majors browsers and OS), users can select "reduce motion" on their operating system preferences and it will turn off CSS transitions for them without any further work required.
-
-## Core Team
-
-| ![Daniel Eden](https://avatars2.githubusercontent.com/u/439365?s=460&u=512b4cc5324938ae40bbb8f3b7769d335953cd3a&v=4) | ![Elton Mesquita](https://avatars2.githubusercontent.com/u/5007208?s=460&u=418401ee605824272e5dcb955fd64ea24546a857&v=4) | ![Waren Gonzaga](https://avatars1.githubusercontent.com/u/15052701?s=460&u=9e58364978379536d3f26c4ce5cae1a2a449a0e4&v=4) |
-| --- | --- | --- |
-| [Daniel Eden](https://github.com/daneden) | [Elton Mesquita](https://github.com/eltonmesquita) | [Waren Gonzaga](https://github.com/WarenGonzaga) |
-| Animate.css Creator | Maintainer | Core Contributor |
-
-## License
-
-Animate.css is licensed under the [Hippocratic License](http://firstdonoharm.dev).
-
-## Code of Conduct
-
-This project and everyone participating in it is governed by the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [animate@eltonmesquita.com](mailto:animate@eltonmesquita.com).
+Check out our [documentation](https://docs.excalidraw.com/docs/@excalidraw/excalidraw/installation) for more details!
 
 ## Contributing
 
-Pull requests are the way to go here. We only have two rules for submitting a pull request: match the naming convention (camelCase, categorised [fades, bounces, etc]) and let us see a demo of submitted animations in a [pen](https://codepen.io). That **last one is important**.
+- Missing something or found a bug? [Report here](https://github.com/excalidraw/excalidraw/issues).
+- Want to contribute? Check out our [contribution guide](https://docs.excalidraw.com/docs/introduction/contributing) or let us know on [Discord](https://discord.gg/UexuTaE).
+- Want to help with translations? See the [translation guide](https://docs.excalidraw.com/docs/introduction/contributing#translating).
+
+## Integrations
+
+- [VScode extension](https://marketplace.visualstudio.com/items?itemName=pomdtr.excalidraw-editor)
+- [npm package](https://www.npmjs.com/package/@excalidraw/excalidraw)
+
+## Who's integrating Excalidraw
+
+[Google Cloud](https://googlecloudcheatsheet.withgoogle.com/architecture) • [Meta](https://meta.com/) • [CodeSandbox](https://codesandbox.io/) • [Obsidian Excalidraw](https://github.com/zsviczian/obsidian-excalidraw-plugin) • [Replit](https://replit.com/) • [Slite](https://slite.com/) • [Notion](https://notion.so/) • [HackerRank](https://www.hackerrank.com/) • and many others
+
+## Sponsors & support
+
+If you like the project, you can become a sponsor at [Open Collective](https://opencollective.com/excalidraw) or use [Excalidraw+](https://plus.excalidraw.com/).
+
+## Thank you for supporting Excalidraw
+
+[<img src="https://opencollective.com/excalidraw/tiers/sponsors/0/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/0/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/1/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/1/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/2/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/2/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/3/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/3/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/4/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/4/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/5/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/5/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/6/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/6/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/7/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/7/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/8/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/8/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/9/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/9/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/10/avatar.svg?avatarHeight=120"/>](https://opencollective.com/excalidraw/tiers/sponsors/10/website)
+
+<a href="https://opencollective.com/excalidraw#category-CONTRIBUTE" target="_blank"><img src="https://opencollective.com/excalidraw/tiers/backers.svg?avatarHeight=32"/></a>
+
+Last but not least, we're thankful to these companies for offering their services for free:
+
+[![Vercel](./.github/assets/vercel.svg)](https://vercel.com) [![Sentry](./.github/assets/sentry.svg)](https://sentry.io) [![Crowdin](./.github/assets/crowdin.svg)](https://crowdin.com)
