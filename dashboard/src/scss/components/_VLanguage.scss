@@ -1,0 +1,31 @@
+/* ---------------------------------- */
+/* 国旗图标样式                        */
+/* ---------------------------------- */
+
+.language-flag-styled {
+  display: inline-block;
+  width: 1.33em;
+  height: 1em;
+  margin-right: 8px;
+  border-radius: 2px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: grayscale(20%) opacity(0.7);
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.fi-cn {
+  background-image: url('@/assets/images/i18n/cn.svg');
+}
+
+.fi-us {
+  background-image: url('@/assets/images/i18n/us.svg');
+}
+
+.language-item:hover .language-flag-styled,
+.styled-menu-item-active .language-flag-styled,
+.language-item-selected .language-flag-styled, 
+.v-list-item--active .language-flag-styled {
+  filter: grayscale(0%) opacity(1);
+}

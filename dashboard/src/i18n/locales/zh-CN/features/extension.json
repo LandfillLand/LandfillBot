@@ -1,0 +1,236 @@
+{
+  "title": "插件管理",
+  "subtitle": "管理和配置系统插件",
+  "tabs": {
+    "installedPlugins": "已安装的插件",
+    "installedMcpServers": "已安装的 MCP 服务器",
+    "handlersOperation": "管理行为",
+    "market": "插件市场"
+  },
+  "search": {
+    "placeholder": "搜索插件...",
+    "marketPlaceholder": "搜索市场插件..."
+  },
+  "views": {
+    "card": "卡片视图",
+    "list": "列表视图"
+  },
+  "buttons": {
+    "showSystemPlugins": "显示系统插件",
+    "hideSystemPlugins": "隐藏系统插件",
+    "install": "安装",
+    "uninstall": "卸载",
+    "update": "更新",
+    "reload": "重载",
+    "enable": "启用",
+    "disable": "禁用",
+    "configure": "配置",
+    "viewInfo": "行为",
+    "viewDocs": "文档",
+    "viewRepo": "仓库",
+    "close": "关闭",
+    "save": "保存",
+    "saveAndClose": "保存并关闭",
+    "cancel": "取消",
+    "confirm": "确认",
+    "actions": "操作",
+    "back": "返回",
+    "selectFile": "选择文件",
+    "refresh": "刷新",
+    "updateAll": "更新全部插件",
+    "deleteSource": "删除源"
+  },
+  "status": {
+    "enabled": "启用",
+    "disabled": "禁用",
+    "system": "系统",
+    "loading": "加载中...",
+    "installed": "已安装",
+    "unknown": "未知"
+  },
+  "tooltips": {
+    "enable": "点击启用",
+    "disable": "点击禁用",
+    "reload": "重载",
+    "configure": "配置",
+    "viewInfo": "行为",
+    "viewDocs": "文档",
+    "update": "更新",
+    "uninstall": "卸载"
+  },
+  "table": {
+    "headers": {
+      "name": "名称",
+      "description": "描述",
+      "version": "版本",
+      "author": "作者",
+      "status": "状态",
+      "actions": "操作",
+      "stars": "Star数",
+      "lastUpdate": "最近更新",
+      "tags": "标签",
+      "eventType": "行为类型",
+      "specificType": "具体类型",
+      "trigger": "触发方式"
+    }
+  },
+  "empty": {
+    "noPlugins": "暂无插件",
+    "noPluginsDesc": "尝试安装插件或者显示系统插件"
+  },
+  "market": {
+    "recommended": "🥳 推荐",
+    "allPlugins": "📦 全部插件",
+    "showFullName": "完整名称",
+    "devDocs": "插件开发文档",
+    "submitRepo": "提交插件仓库",
+    "repo": "仓库",
+    "customSource": "自定义插件源",
+    "source": "插件源",
+    "availableSources": "可用源",
+    "sourceManagement": "插件源管理",
+    "addSource": "添加插件源",
+    "sourceName": "源名称",
+    "sourceUrl": "源地址",
+    "defaultSource": "默认插件源",
+    "removeSource": "删除插件源",
+    "confirmRemoveSource": "确定要删除此插件源吗？",
+    "sourceAdded": "插件源添加成功",
+    "sourceRemoved": "插件源删除成功",
+    "sourceError": "操作失败",
+    "selectSource": "选择插件源",
+    "currentSource": "当前插件源",
+    "editSource": "编辑插件源",
+    "sourceUpdated": "插件源更新成功",
+    "defaultOfficialSource": "默认官方源",
+    "sourceExists": "该插件源已存在",
+    "installPlugin": "安装插件",
+    "cart": {
+      "title": "购物车",
+      "add": "加入购物车",
+      "remove": "移出购物车",
+      "viewReadme": "阅读 README",
+      "clear": "清空",
+      "installSelected": "安装已选",
+      "empty": "购物车为空",
+      "batchProgress": "批量安装（{done}/{total}）",
+      "batchProgressDetail": "批量安装（{done}/{total}）· 成功 {success} · 失败 {failed}",
+      "batchInstalling": "批量安装（{count} 个）",
+      "batchSuccess": "批量安装完成（成功 {success} / 共 {total}）",
+      "batchPartial": "批量安装完成（成功 {success} / 失败 {failed} / 共 {total}）"
+    }
+  },
+  "sort": {
+    "default": "默认排序",
+    "stars": "Star数",
+    "author": "作者名",
+    "updated": "更新时间",
+    "ascending": "升序",
+    "descending": "降序"
+  },
+  "tags": {
+    "danger": "危险"
+  },
+  "dialogs": {
+    "error": {
+      "title": "错误信息",
+      "checkConsole": "详情请检查平台日志"
+    },
+    "config": {
+      "title": "插件配置",
+      "noConfig": "这个插件没有配置"
+    },
+    "loading": {
+      "title": "加载中...",
+      "logs": "日志"
+    },
+    "uninstall": {
+      "title": "删除确认",
+      "message": "你确定要删除当前插件吗？",
+      "deleteConfig": "同时删除插件配置文件",
+      "deleteData": "同时删除插件持久化数据",
+      "configHint": "配置文件位于 data/config 目录",
+      "dataHint": "删除 data/plugin_data 和 data/plugins_data 目录下的数据"
+    },
+    "install": {
+      "title": "安装插件",
+      "fromFile": "从文件安装",
+      "fromUrl": "从链接安装"
+    },
+    "danger_warning": {
+      "title": "警告",
+      "message": "该插件可能包含不安全的代码或功能，可能导致系统异常或数据损失等。请确认是否继续安装？",
+      "confirm": "继续",
+      "cancel": "取消"
+    },
+    "forceUpdate": {
+      "title": "未检测到新版本",
+      "message": "当前插件未检测到新版本，是否强制重新安装？这将从远程仓库拉取最新代码。",
+      "confirm": "强制更新"
+    }
+  },
+  "messages": {
+    "uninstalling": "正在卸载",
+    "refreshing": "正在刷新插件列表...",
+    "refreshSuccess": "插件列表已刷新！",
+    "refreshFailed": "刷新插件列表时发生错误",
+    "reloadSuccess": "重载成功",
+    "updateSuccess": "更新成功!",
+    "addSuccess": "添加成功!",
+    "saveSuccess": "保存成功!",
+    "deleteSuccess": "删除成功!",
+    "installing": "正在从文件安装插件",
+    "installingFromUrl": "正在从链接安装插件...",
+    "installFailed": "安装插件失败:",
+    "getMarketDataFailed": "获取插件市场数据失败:",
+    "hasUpdate": "有新版本:",
+    "confirmDelete": "确定要删除插件吗？",
+    "fillUrlOrFile": "请填写插件链接或上传插件文件",
+    "dontFillBoth": "请不要同时填写插件链接和上传文件",
+    "supportedFormats": "支持 .zip 格式的插件文件",
+    "updateAllSuccess": "所有可更新的插件都已更新！",
+    "updateAllFailed": "有 {failed}/{total} 个插件更新失败:",
+    "fillSourceNameAndUrl": "请填写完整的插件源名称和地址",
+    "invalidUrl": "请输入有效的URL地址",
+    "enterJsonUrl": "请输入返回插件列表JSON数据的URL地址"
+  },
+  "upload": {
+    "fromFile": "从文件安装",
+    "fromUrl": "从链接安装",
+    "selectFile": "选择文件",
+    "enterUrl": "输入插件仓库链接"
+  },
+  "card": {
+    "actions": {
+      "pluginConfig": "插件配置",
+      "uninstallPlugin": "卸载插件",
+      "reloadPlugin": "重载插件",
+      "togglePlugin": "插件",
+      "viewHandlers": "查看行为",
+      "updateTo": "更新到",
+      "reinstall": "重新安装"
+    },
+    "status": {
+      "hasUpdate": "有新版本可用",
+      "disabled": "该插件已经被禁用",
+      "handlersCount": "个行为"
+    },
+    "alt": {
+      "logo": "logo",
+      "extensionIcon": "扩展图标"
+    },
+    "errors": {
+      "confirmNotRegistered": "$confirm 未正确注册"
+    }
+  },
+  "conflicts": {
+    "title": "检测到指令冲突",
+    "message": "这会导致部分指令工作异常，建议前往【指令管理】面板进行处理。",
+    "pairs": "对指令冲突",
+    "goToManage": "前往处理",
+    "later": "稍后处理"
+  },
+  "pluginChangelog": {
+    "menuTitle": "查看更新日志"
+  }
+}
