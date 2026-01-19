@@ -1,0 +1,147 @@
+:root {
+  --vp-c-orange-1: #e04600;
+  --vp-c-orange-2: #e85d14;
+  --vp-c-orange-3: #ef7234;
+  --vp-c-orange-soft: rgba(239, 114, 52, 0.16);
+  --vp-c-brand-1: var(--vp-c-orange-1);
+  --vp-c-brand-2: var(--vp-c-orange-2);
+  --vp-c-brand-3: var(--vp-c-orange-3);
+  --vp-c-brand-soft: var(--vp-c-orange-soft);
+  --vp-c-brand: var(--vp-c-brand-3);
+  --vp-font-family-base: -apple-system, BlinkMacSystemFont, "avenir next", avenir, helvetica, "helvetica neue", ubuntu, roboto, noto, "segoe ui", arial, sans-serif;
+}
+
+:root.dark {
+  --vp-c-orange-1: #ff9852;
+  --vp-c-orange-2: #ff823e;
+}
+
+.vp-doc figcaption {
+  line-height: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--vp-c-text-2);
+}
+
+.VPMenuGroup .title {
+  line-height: 28px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--vp-c-text-2);
+}
+
+.vp-doc :not(pre) > code {
+  line-height: 1.5;
+}
+
+.label-input {
+  font-size: smaller;
+  display: inline-flex;
+  align-items: center;
+  margin-right: 1em;
+}
+
+.label-input > label {
+  display: inline-flex;
+  align-items: center;
+}
+
+.label-input > input,
+.label-input > select {
+  all: revert;
+  margin: 0 0.5em !important;
+  accent-color: var(--vp-c-brand);
+}
+
+.vp-doc td {
+  white-space: nowrap;
+}
+
+.vp-doc p:hover .header-anchor {
+  opacity: 1;
+}
+
+.vp-doc .plot {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.vp-doc .plot,
+.vp-doc .plot-ramp {
+  background: none;
+  overflow: visible;
+  position: relative;
+  z-index: 1;
+}
+
+:root [aria-label="tip"][fill="white"],
+:root [aria-label="tip"] [fill="white"] {
+  fill: var(--vp-c-bg-alt);
+}
+
+:root.dark marker[stroke="white"],
+:root.dark [aria-label^="crosshair"][stroke="white"] {
+  stroke: var(--vp-c-bg);
+}
+
+:root.dark marker[fill="white"] {
+  fill: var(--vp-c-bg);
+}
+
+.vp-doc .plot a:hover {
+  text-decoration: initial;
+}
+
+.vp-doc sub {
+  line-height: 1;
+}
+
+.bg-alt {
+  background: var(--vp-c-bg-alt);
+}
+
+.lh-normal {
+  line-height: normal;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+.ma4 {
+  margin: 2rem;
+}
+
+.ml1 {
+  margin-left: 1rem;
+}
+
+.mb2 {
+  margin-bottom: 0.5rem;
+}
+
+.f12 {
+  font-size: 12px;
+}
+
+.f14 {
+  font-size: 14px;
+}
+
+.fw6 {
+  font-weight: 600;
+}
+
+.fb6 {
+  flex-basis: 10rem;
+}
+
+@media screen and (min-width: 960px) {
+  .flex-l {
+    display: flex;
+  }
+}
