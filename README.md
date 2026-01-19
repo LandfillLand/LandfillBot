@@ -1,51 +1,74 @@
-<p align="left">
-  <img src="https://github.com/Neo-Life/.github/blob/main/img/nebula-sm.jpg?raw=true" alt="Nebula" width="100%">
-</p>
+[![Build status](https://github.com/git/git/workflows/CI/badge.svg)](https://github.com/git/git/actions?query=branch%3Amaster+event%3Apush)
 
-# Nebula (Based on [AstrBot](https://github.com/AstrBotDevs/AstrBot)) 
+Git - fast, scalable, distributed revision control system
+=========================================================
 
-## ⚖️ Fork Disclaimer & License Agreement
-> [!Note]
-> This repository is a personal modified fork based on the upstream project.
+Git is a fast, scalable, distributed revision control system with an
+unusually rich command set that provides both high-level operations
+and full access to internals.
 
-### 1. Scope & Purpose Limitation
-All modifications, configuration adjustments, and derivative code within this repository created by **IGCrystal** are intended solely for the developer's personal learning, research, and data backup purposes.
+Git is an Open Source project covered by the GNU General Public
+License version 2 (some parts of it are under different licenses,
+compatible with the GPLv2). It was originally written by Linus
+Torvalds with help of a group of hackers around the net.
 
-This modified version is **not intended** to provide public services, stable interfaces, or production environment solutions to any third party. Any acquisition, deployment, or execution of the content of this repository by parties other than the developer is deemed a voluntary personal action and is unrelated to the modifier (**IGCrystal**) or the original upstream author.
+Please read the file [INSTALL][] for installation instructions.
 
-### 2. No Warranty
-The modifications contained in this repository are provided **"AS IS"**, without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, or non-infringement.
+Many Git online resources are accessible from <https://git-scm.com/>
+including full documentation and Git related tools.
 
-The modifier (**IGCrystal**) makes no commitment to provide continuous maintenance, follow upstream updates, or offer technical support for this fork. You are solely responsible for all risks associated with running this modified version (including, but not limited to, data loss, system failure, or legal risks).
+See [Documentation/gittutorial.adoc][] to get started, then see
+[Documentation/giteveryday.adoc][] for a useful minimum set of commands, and
+`Documentation/git-<commandname>.adoc` for documentation of each command.
+If git has been correctly installed, then the tutorial can also be
+read with `man gittutorial` or `git help tutorial`, and the
+documentation of each command with `man git-<commandname>` or `git help
+<commandname>`.
 
-### 3. License
-As a derivative work of the upstream project, this repository strictly adheres to the **GNU Affero General Public License v3.0 (AGPL-3.0)** adopted by the original project.
+CVS users may also want to read [Documentation/gitcvs-migration.adoc][]
+(`man gitcvs-migration` or `git help cvs-migration` if git is
+installed).
 
-* **Inheritance:** All copyright notices and license files from the upstream project are retained within this repository.
-* **Distribution Obligation:** Under the AGPL, if you run this modified version over a network and interact with others, you must disclose your complete source code (including **IGCrystal**'s modifications) to the users interacting with it.
+The user discussion and development of Git take place on the Git
+mailing list -- everyone is welcome to post bug reports, feature
+requests, comments and patches to git@vger.kernel.org (read
+[Documentation/SubmittingPatches][] for instructions on patch submission
+and [Documentation/CodingGuidelines][]).
 
-**If you cannot accept the terms of the AGPL or the limitations of this statement, please stop using this repository immediately.**
+Those wishing to help with error message, usage and informational message
+string translations (localization l10) should see [po/README.md][]
+(a `po` file is a Portable Object file that holds the translations).
 
----
+To subscribe to the list, send an email to <git+subscribe@vger.kernel.org>
+(see https://subspace.kernel.org/subscribing.html for details). The mailing
+list archives are available at <https://lore.kernel.org/git/>,
+<https://marc.info/?l=git> and other archival sites.
 
-## ⚖️ 派生版本免责声明与许可协议
-> [!NOTE]
-> **注意**：本仓库是基于上游项目进行的个人修改版本 (Fork)。
+Issues which are security relevant should be disclosed privately to
+the Git Security mailing list <git-security@googlegroups.com>.
 
-### 1. 范围与用途限定 (Scope & Purpose Limitation)
-本仓库（Repository）内由 **IGCrystal** 进行的所有修改内容、配置调整及衍生代码，仅供开发者本人进行个人学习、研究及数据备份使用。
+The maintainer frequently sends the "What's cooking" reports that
+list the current status of various development topics to the mailing
+list.  The discussion following them give a good reference for
+project status, development direction and remaining tasks.
 
-本修改版本**不旨在**向任何第三方提供公共服务、稳定接口或生产环境解决方案。任何非本人对本仓库内容的获取、部署或运行行为，均被视为您的个人自发行为，与修改者 (**IGCrystal**) 及原上游作者无关。
+The name "git" was given by Linus Torvalds when he wrote the very
+first version. He described the tool as "the stupid content tracker"
+and the name as (depending on your mood):
 
-### 2. 无担保声明 (No Warranty)
-本仓库包含的修改内容按 **“原样”** 提供，不附带任何明示或暗示的保证，包括但不限于对适销性、特定用途适用性或非侵权性的保证。
+ - random three-letter combination that is pronounceable, and not
+   actually used by any common UNIX command.  The fact that it is a
+   mispronunciation of "get" may or may not be relevant.
+ - stupid. contemptible and despicable. simple. Take your pick from the
+   dictionary of slang.
+ - "global information tracker": you're in a good mood, and it actually
+   works for you. Angels sing, and a light suddenly fills the room.
+ - "goddamn idiotic truckload of sh*t": when it breaks
 
-修改者 (**IGCrystal**) 不承诺对本派生版本进行任何形式的持续维护、跟随上游更新或技术支持。您需自行承担运行本修改版本可能带来的所有风险（包括数据丢失、系统故障或法律风险）。
-
-### 3. 许可协议 (License)
-本仓库作为上游项目的派生作品，严格遵循原项目采用的 **GNU Affero General Public License v3.0 (AGPL-3.0)** 开源协议。
-
-* **继承性**：本仓库内保留了上游项目的所有版权声明及许可文件。
-* **分发义务**：根据 AGPL 协议，如果您在网络环境运行本修改版本并与他人交互，您必须向交互者公开您的完整源代码（包含 **IGCrystal** 的修改部分）。
-
-**如果您无法接受 AGPL 协议的条款或本声明的限制，请立即停止使用本仓库。**
+[INSTALL]: INSTALL
+[Documentation/gittutorial.adoc]: Documentation/gittutorial.adoc
+[Documentation/giteveryday.adoc]: Documentation/giteveryday.adoc
+[Documentation/gitcvs-migration.adoc]: Documentation/gitcvs-migration.adoc
+[Documentation/SubmittingPatches]: Documentation/SubmittingPatches
+[Documentation/CodingGuidelines]: Documentation/CodingGuidelines
+[po/README.md]: po/README.md
